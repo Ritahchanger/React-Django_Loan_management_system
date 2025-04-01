@@ -8,7 +8,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="bg-green-600 text-white shadow-md">
-      <div className="container mx-auto px-6 py-2 flex justify-between items-center">
+      <div className="container mx-auto px-6 py-[0.3rem] flex justify-between items-center">
         <div className="text-xl font-bold">
           <Link to="/">LOANN</Link>
         </div>
@@ -31,20 +31,20 @@ const Navbar: React.FC = () => {
         <div className="hidden md:flex space-x-4">
           <Link
             to="/login"
-            className="px-4 py-2 border rounded hover:bg-white hover:text-green-600 transition"
+            className="px-4 py-1 border rounded hover:bg-white hover:text-green-600 transition"
           >
             Login
           </Link>
           <Link
             to="/signup"
-            className="px-4 py-2 border rounded bg-white text-green-600 hover:bg-gray-200 transition"
+            className="px-4 py-1 border rounded bg-white text-green-600 hover:bg-gray-200 transition"
           >
             Sign Up
           </Link>
         </div>
 
         <button
-          className="md:hidden focus:outline-none"
+          className="md:hidden focus:outline-none text-2xl"
           onClick={() => setIsOpen(true)}
         >
           &#9776;
