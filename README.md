@@ -1,6 +1,7 @@
 # Rahisi Loan Management System
 
-A loan management system built with React, Vite, TypeScript, Python (Django), and Tailwind CSS. This system supports different loan categories and allows users (borrowers and investors) to interact, apply for loans, and manage profiles.
+A loan management system built with React, Vite, TypeScript, Python (Django), and Tailwind CSS. This system supports 
+different loan categories and allows users (borrowers and investors) to interact, apply for loans, and manage profiles.
 
 ## Features
 
