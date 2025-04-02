@@ -17,4 +17,22 @@
 
   margin:0 auto;
 
+  padding-right:1rem;
+
+  padding-left:1rem;
+
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-yellow);
+}
+::-webkit-scrollbar-thumb {
+  background:#333;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-white);
 }

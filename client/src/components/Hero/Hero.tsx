@@ -15,9 +15,10 @@ const Hero = () => {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
-            className="text-4xl md:text-6xl font-bold"
+            className="text-4xl md:text-6xl font-bold mt-[4rem]"
           >
-            Empower Your Finances with Smart Loans
+            Empower Your Finances with
+            <br/>Smart Loans
           </motion.h1>
 
           <motion.p
@@ -37,10 +38,10 @@ const Hero = () => {
             transition={{ delay: 0.7, duration: 0.5 }}
             className="mt-6 flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <button className="px-6 py-2 bg-white text-green-700 rounded-lg font-semibold shadow-md hover:bg-gray-200 transition">
+            <button className="px-6 py-2 bg-white text-green-700 rounded-lg font-semibold shadow-md hover:bg-gray-200 transition cursor-pointer">
               Apply for a Loan
             </button>
-            <button className="px-6 py-2 border border-white rounded-lg font-semibold hover:bg-green-600 transition">
+            <button className="px-6 py-2 border border-white cursor-pointer rounded-lg font-semibold hover:bg-green-600 transition">
               Learn More
             </button>
           </motion.div>

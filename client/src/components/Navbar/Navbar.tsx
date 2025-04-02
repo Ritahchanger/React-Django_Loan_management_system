@@ -7,7 +7,7 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
-    <nav className="bg-green-600 text-white shadow-md">
+    <nav className="bg-green-600 text-white shadow-md fixed z-20  w-full right-0 left-0">
       <div className="container mx-auto px-6 py-[0.3rem] flex justify-between items-center">
         <div className="text-xl font-bold">
           <Link to="/">LOANN</Link>
