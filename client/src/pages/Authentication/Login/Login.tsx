@@ -36,8 +36,7 @@ const Login = () => {
 
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Username */}
+        <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
           <div>
             <label className="block text-gray-600 text-sm font-medium">
               Username
