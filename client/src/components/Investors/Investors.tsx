@@ -8,7 +8,7 @@ const Investors = () => {
   const handleModalToggle = () => setIsModalOpen(!isModalOpen);
 
   return (
-    <div id="investors" className="bg-gray-50 py-12">
+    <div id="investors" className="bg-gray-50 py-[5rem]">
       <div className="container mx-auto text-center">
         <Title title="Invest in Startups" />
         <p className="mt-3">
