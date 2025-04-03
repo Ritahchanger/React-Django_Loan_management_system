@@ -11,7 +11,7 @@ const Advantages = () => {
           {AdvantagesData.map((data, index) => (
             <div
               key={index}
-              className="border border-neutral-300 bg-white p-6  rounded-lg transition-all hover:shadow-lg"
+              className="border flex justify-center flex-col items-center md:block  border-neutral-300 bg-white p-6  rounded-lg transition-all hover:shadow-lg"
             >
               <div className="flex items-center mb-2">
                 <div className="mr-[0.5rem] font-semibold">
@@ -21,7 +21,7 @@ const Advantages = () => {
                   {data.title}
                 </h3>
               </div>
-              <p className="text-gray-700 mb-4">{data.description}</p>
+              <p className="text-gray-700 mb-4 text-center ">{data.description}</p>
               <ul className="list-disc list-inside text-gray-600">
                 {data.features.map((feature, idx) => (
                   <li key={idx}>{feature}</li>
