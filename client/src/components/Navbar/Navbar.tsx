@@ -5,6 +5,8 @@ import { X } from "lucide-react";
 
 import { IRoute } from "express";
 
+import { useNavigate } from "react-router-dom";
+
 const navbarItems: IRoute[] = [
   {
     name: "Home",
@@ -25,6 +27,8 @@ const navbarItems: IRoute[] = [
 ];
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
@@ -61,7 +65,12 @@ const Navbar: React.FC = () => {
           </div>
 
           <div>
-            <button className="px-6 py-2 border border-white cursor-pointer rounded-lg mr-[2rem] md:mr-0 font-semibold hover:bg-green-600 transition">
+            <button
+              className="px-6 py-2 border border-white cursor-pointer rounded-lg mr-[2rem] md:mr-0 font-semibold hover:bg-green-600 transition"
+              onClick={() => {
+                navigate("/myinvestments");
+              }}
+            >
               My investments
             </button>
 

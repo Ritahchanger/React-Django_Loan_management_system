@@ -4,6 +4,7 @@ import Advantages from "../../components/Advantages/Advantages"
 import LoanCategories from "../../components/LoanCaetories/LoanCategories"
 import Investors from "../../components/Investors/Investors"
 import Footer from "../../components/Footer/Footer"
+import Testmonials from "../../components/Testmonials/Testmonials"
 const Home = () => {
   return (
     <div>
@@ -11,6 +12,7 @@ const Home = () => {
         <Hero/>
         <Advantages/>
         <LoanCategories/>
+        <Testmonials/>
         <Investors/>
         <Footer/>
     </div>

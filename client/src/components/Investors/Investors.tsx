@@ -8,10 +8,10 @@ const Investors = () => {
   const handleModalToggle = () => setIsModalOpen(!isModalOpen);
 
   return (
-    <div id="investors" className="bg-gray-50 py-[5rem]">
+    <div id="investors" className="bg-gray-50 py-[6rem]">
       <div className="container mx-auto text-center">
         <Title title="Invest in Startups" />
-        <p className="mt-3">
+        <p className="pt-3">
           Deposit a minimum of 100,000 KSH and invest in high-potential startups.
         </p>
         <button
