@@ -16,6 +16,8 @@
   --darkPink: #ff004f;
   --yellow: #ffd700; /* Defined color-yellow */
   --gray: #333;
+
+  --dark-mode-text: #f3f4f6;
 }
 
 .container {
@@ -40,6 +42,35 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.8);
 }
+body.dark {
+  background: #000;
+}
+
+body.dark .card {
+  background: #1f2937;
+}
+
+body.dark .text-white,
+body.dark .text-gray-800 {
+  color: #f3f4f6;
+}
+body.dark .text-neutral-600 {
+  color: #f3f4f6;
+}
+body.dark .bg-white {
+  background: #1f2937;
+}
+body.dark .account-nav {
+  background: #1f2937;
+}
+body.dark input,
+body.dark select {
+  background: #374151;
+  color: var(--dark-mode-text);
+}
+
+
+
 
 /* Common Button */
 .common-button {

@@ -52,7 +52,7 @@ const InvestorsPage: React.FC = () => {
       <div className="p-6 space-y-6">
         <Title title="  Investors Dashboard" />
 
-        <div className="bg-white border  border-neutral-300 rounded-sm p-4">
+        <div className="bg-white  border  border-neutral-300 rounded-sm p-4">
           <h2 className="text-lg font-semibold mb-4">Add New Investor</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <input

@@ -33,7 +33,7 @@ const AccountSidebar: React.FC = () => {
   ];
 
   return (
-    <div className="fixed w-[50px] h-full shadow-md bg-white z-20">
+    <div className="fixed w-[50px] sidebar h-full shadow-md bg-white z-20">
       <ul className="flex flex-col items-center ">
         {accountRoutes.map((link, index) => (
           <li
