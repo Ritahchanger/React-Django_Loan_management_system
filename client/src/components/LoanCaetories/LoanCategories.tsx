@@ -8,8 +8,8 @@ const categories = [
 
 const LoanCategories = () => {
   return (
-    <div className="bg-gray-50">
-      <div id="loans" className="container mx-auto my-[6rem] ">
+    <div className="bg-gray-50 py-[6rem]">
+      <div id="loans" className="container mx-auto ">
      <Title title="Loan Categories" />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
         {categories.map((loan, index) => (

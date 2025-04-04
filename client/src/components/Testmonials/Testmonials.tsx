@@ -44,7 +44,7 @@ const testimonials: ITestimonials[] = [
 
 const Testimonials = () => {
   return (
-    <div className="bg-gray-50 pt-[6rem]">
+    <div className="bg-green-500 py-[6rem]">
       <div className="container mx-auto px-4">
         <Title title="Testimonials" />
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
