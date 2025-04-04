@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import AccountNavbar from "../../Layout/AccountNavbar";
 import AccountSidebar from "../../Layout/AccountSidebar";
 import Title from "../../components/Title/Title";
+import "./loan.css"
 
 interface LoanType {
   label: string;
@@ -108,7 +109,7 @@ const Loan: FC = () => {
       <div className="p-6 sm:mx-[3rem] md:mx-[5rem]">
         <Title title="YOUR LOANS" />
         
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-3 status">
           <button className={tabStyles("pending")} onClick={() => setSelectedTab("pending")}>
             PENDING
           </button>

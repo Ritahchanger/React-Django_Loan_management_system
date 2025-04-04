@@ -46,7 +46,9 @@ body.dark {
   background: #000;
   color: var(--dark-mode-text);
 }
-
+body.dark .text-gray-700, body.dark .text-gray-600{
+  color: var(--dark-mode-text);
+}
 body.dark .card {
   background: #1f2937;
 }
