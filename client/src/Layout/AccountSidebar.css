@@ -1,7 +1,27 @@
-.sidebar{
-
-    height:calc(100vh - 50px);
-
-    top:50px;
-
-}
+/* AccountSidebar.css */
+.sidebar {
+    top: 0;
+    bottom: 0;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .sidebar:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .sidebar ul li {
+    transition: all 0.3s ease;
+  }
+  
+  .sidebar ul li:hover {
+    background-color: #e1f5fe;
+  }
+  
+  .sidebar ul li .text-2xl {
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .sidebar ul li:hover .text-2xl {
+    transform: scale(1.2);
+  }
+  

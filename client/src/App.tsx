@@ -7,6 +7,7 @@ import Loan from "./pages/Loans/Loan";
 import PersonalLoans from "./pages/AccountPages/PersonalLoans/PersonalLoans";
 import BusinessLoans from "./pages/AccountPages/BusinessLoans/BusinessLoans";
 import AssetFinancing from "./pages/AccountPages/AssetFinancing/AssetFinancing";
+import InvestorsPage from "./pages/AccountPages/InvestorsPage/InvestorsPage";
 const App = () => {
   return (
     <div>
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/personal-loans" element={<PersonalLoans />} />
           <Route path="/asset-financing" element={<AssetFinancing />} />
           <Route path="/business-loans" element={<AssetFinancing />} />
+          <Route path="/account/investors" element={<InvestorsPage />} />
         </Routes>
       </BrowserRouter>
     </div>

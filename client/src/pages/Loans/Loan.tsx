@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import {
   Briefcase,
   User,
@@ -7,18 +7,16 @@ import {
   Book,
   AlertTriangle,
   Home,
-  Icon as LucideIcon,
 } from "lucide-react";
 
-import AccountNavbar from "../../Layout/AccountNavbar";
-
-import AccountSidebar from "../../Layout/AccountSidebar";
-
 import { useNavigate } from "react-router-dom";
+import AccountNavbar from "../../Layout/AccountNavbar";
+import AccountSidebar from "../../Layout/AccountSidebar";
+import Title from "../../components/Title/Title";
 
 interface LoanType {
   label: string;
-  icon?:any;
+  icon?: any;
   note?: string;
 }
 
@@ -77,22 +75,70 @@ const loanCategories: LoanCategory[] = [
   },
 ];
 
+const dummyLoans = {
+  pending: [
+    { id: 1, name: "Car Loan - Toyota", amount: "$10,000" },
+    { id: 2, name: "Education Loan - College", amount: "$5,000" },
+  ],
+  approved: [
+    { id: 3, name: "Business Expansion", amount: "$20,000" },
+    { id: 4, name: "Land Purchase", amount: "$15,000" },
+  ],
+  denied: [
+    { id: 5, name: "Startup Pitch - Rejected", amount: "$0" },
+  ],
+};
+
 const Loan: FC = () => {
   const navigate = useNavigate();
+  const [selectedTab, setSelectedTab] = useState<"pending" | "approved" | "denied">("pending");
+
+  const tabStyles = (tab: string) =>
+    `py-2 px-4 font-semibold transition ${
+      selectedTab === tab
+        ? "bg-blue-600 text-white"
+        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+    }`;
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <AccountNavbar/>
-      <AccountSidebar/>
+      <AccountNavbar />
+      <AccountSidebar />
+
       <div className="max-w-6xl mx-auto p-6">
-        <h1 className="text-3xl font-bold text-center mb-10 text-gray-800">
-          Explore Our Loan Options
-        </h1>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <Title title="YOUR LOANS" />
+        
+        <div className="grid grid-cols-3">
+          <button className={tabStyles("pending")} onClick={() => setSelectedTab("pending")}>
+            PENDING
+          </button>
+          <button className={tabStyles("approved")} onClick={() => setSelectedTab("approved")}>
+            APPROVED
+          </button>
+          <button className={tabStyles("denied")} onClick={() => setSelectedTab("denied")}>
+            DENIED
+          </button>
+        </div>
+
+        <div className="bg-white p-4 rounded-sm border-b border-r border-l border-neutral-300  mb-10">
+          <h3 className="text-lg font-semibold mb-3 capitalize">{selectedTab} Loans</h3>
+          <ul className="space-y-2">
+            {dummyLoans[selectedTab].map((loan) => (
+              <li key={loan.id} className="text-sm text-gray-800 border-b border-neutral-300 py-2 flex justify-between">
+                <span>{loan.name}</span>
+                <span className="font-medium">{loan.amount}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <Title title="Explore Our Loan Options" />
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4">
           {loanCategories.map((category, index) => (
             <div
               key={index}
-              className={`bg-white shadow-md rounded-2xl p-6 border-l-4 ${category.color}`}
+              className={`bg-white hover:shadow-lg shadow rounded-2xl p-6 border-l-4 ${category.color} transition`}
             >
               <div className="flex items-center gap-3 mb-3">
                 {category.icon}
@@ -105,10 +151,7 @@ const Loan: FC = () => {
               </p>
               <ul className="space-y-2">
                 {category.types.map((type, i) => (
-                  <li
-                    key={i}
-                    className="text-sm text-gray-700 flex items-center gap-2"
-                  >
+                  <li key={i} className="text-sm text-gray-700 flex items-center gap-2">
                     {type.icon}
                     {type.label}
                     {type.note && (
@@ -121,9 +164,7 @@ const Loan: FC = () => {
               </ul>
               <button
                 className="mt-5 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-xl transition duration-300"
-                onClick={() => {
-                  navigate(`${category.link}`);
-                }}
+                onClick={() => navigate(`${category.link}`)}
               >
                 {category.title.includes("Startup") ? "Pitch Now" : "Apply Now"}
               </button>

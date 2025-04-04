@@ -4,6 +4,10 @@ interface IRoute{
 
     path:string;
 
+    icon?:any;
+
+    color?:string;
+
 }
 
 
