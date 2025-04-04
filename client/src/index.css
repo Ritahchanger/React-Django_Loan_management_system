@@ -44,6 +44,7 @@
 }
 body.dark {
   background: #000;
+  color: var(--dark-mode-text);
 }
 
 body.dark .card {
@@ -68,9 +69,6 @@ body.dark select {
   background: #374151;
   color: var(--dark-mode-text);
 }
-
-
-
 
 /* Common Button */
 .common-button {

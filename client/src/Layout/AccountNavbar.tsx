@@ -44,7 +44,7 @@ const AccountNavbar = () => {
                   toggleTheme();
                 }}
               >
-                <Moon />
+                { theme === "light" ? <Moon /> : <Sun/> }
               </button>
             </div>
             <div className="flex items-center">

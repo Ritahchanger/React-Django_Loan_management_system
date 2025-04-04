@@ -101,11 +101,11 @@ const Loan: FC = () => {
     }`;
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen  ">
       <AccountNavbar />
       <AccountSidebar />
 
-      <div className="max-w-6xl mx-auto p-6">
+      <div className="p-6 sm:mx-[3rem] md:mx-[5rem]">
         <Title title="YOUR LOANS" />
         
         <div className="grid grid-cols-3">
@@ -120,7 +120,7 @@ const Loan: FC = () => {
           </button>
         </div>
 
-        <div className="bg-white card p-4 rounded-sm border-b border-r border-l border-neutral-300  mb-10">
+        <div className="bg-white card p-4 rounded-sm border-b border-r border-l border-neutral-300  mb-10 h-[300px] overflow-y-auto">
           <h3 className="text-lg font-semibold mb-3 capitalize">{selectedTab} Loans</h3>
           <ul className="space-y-2">
             {dummyLoans[selectedTab].map((loan) => (
@@ -138,7 +138,7 @@ const Loan: FC = () => {
           {loanCategories.map((category, index) => (
             <div
               key={index}
-              className={`bg-white card hover:shadow-sm shadow rounded-sm p-6 border-l-4 ${category.color} transition`}
+              className={`bg-white card hover:shadow-sm shadow rounded-sm p-6 border-l-4  border-t border-b border-r  ${category.color} transition`}
             >
               <div className="flex items-center gap-3 mb-3">
                 {category.icon}
