@@ -1,7 +1,14 @@
-const AccountLayout = () => {
+import { ReactNode } from "react";
+import AccountNavbar from "./AccountNavbar";
+import AccountSidebar from "./AccountSidebar";
+const AccountLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div>AccountLayout</div>
-  )
-}
+    <div>
+      <AccountNavbar />
+      <AccountSidebar />
+      <main>{children}</main>
+    </div>
+  );
+};
 
-export default AccountLayout
+export default AccountLayout;

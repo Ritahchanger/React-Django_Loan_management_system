@@ -1,6 +1,7 @@
 import React from "react";
 import { Car, Home, Building2, Info, ArrowRightCircle } from "lucide-react";
-import Navbar from "../../../components/Navbar/Navbar";
+
+import AccountLayout from "../../../Layout/AccountLayout";
 
 const assetLoans = [
   {
@@ -25,50 +26,50 @@ const assetLoans = [
 
 const AssetFinancing: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
+    <AccountLayout>
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-5xl mx-auto px-6 py-10">
+          <div className="text-center mb-12">
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">
+              Asset Financing Options
+            </h1>
+            <p className="text-gray-600 text-sm max-w-xl mx-auto">
+              Choose a financing option that helps you secure valuable assets
+              while maintaining cash flow.
+            </p>
+          </div>
 
-      <div className="max-w-5xl mx-auto px-6 py-10">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            Asset Financing Options
-          </h1>
-          <p className="text-gray-600 text-sm max-w-xl mx-auto">
-            Choose a financing option that helps you secure valuable assets
-            while maintaining cash flow.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          {assetLoans.map((loan, index) => (
-            <div
-              key={index}
-              className="bg-white border-l-4 rounded-2xl shadow p-6 hover:shadow-lg transition duration-300"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                {loan.icon}
-                <h2 className="text-xl font-semibold text-gray-800">
-                  {loan.title}
-                </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {assetLoans.map((loan, index) => (
+              <div
+                key={index}
+                className="bg-white border-l-4 rounded-2xl shadow p-6 hover:shadow-lg transition duration-300"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  {loan.icon}
+                  <h2 className="text-xl font-semibold text-gray-800">
+                    {loan.title}
+                  </h2>
+                </div>
+                <p className="text-sm text-gray-600 mb-4">{loan.description}</p>
+                <button className="flex items-center gap-2 text-sm text-blue-600 hover:underline hover:text-blue-800">
+                  Learn More <ArrowRightCircle className="w-4 h-4" />
+                </button>
               </div>
-              <p className="text-sm text-gray-600 mb-4">{loan.description}</p>
-              <button className="flex items-center gap-2 text-sm text-blue-600 hover:underline hover:text-blue-800">
-                Learn More <ArrowRightCircle className="w-4 h-4" />
-              </button>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <div className="mt-16 bg-white p-6 rounded-xl shadow-md flex items-center gap-4">
-          <Info className="text-blue-500 w-6 h-6" />
-          <p className="text-gray-700 text-sm">
-            For any asset financing option, you’ll need to fill in a short
-            application form and provide supporting documents. We'll guide you
-            through every step.
-          </p>
+          <div className="mt-16 bg-white p-6 rounded-xl shadow-md flex items-center gap-4">
+            <Info className="text-blue-500 w-6 h-6" />
+            <p className="text-gray-700 text-sm">
+              For any asset financing option, you’ll need to fill in a short
+              application form and provide supporting documents. We'll guide you
+              through every step.
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </AccountLayout>
   );
 };
 
