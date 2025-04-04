@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
-import { IRoute } from "express";
+import { IRoute } from "../../types/Routes.interface";
 
 import { useNavigate } from "react-router-dom";
 

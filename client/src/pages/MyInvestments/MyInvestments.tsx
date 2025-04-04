@@ -92,6 +92,14 @@ const MyInvestments = () => {
             </tbody>
           </table>
         </div>
+        <div className="grid grid-cols-2 gap-[1rem] mt-[2rem]">
+          <div className="p-[1rem] border border-neutral-300">
+            <p>LOANS</p>
+          </div>
+          <div className="p-[1rem] border border-neutral-300">
+            <p>APPLY</p>
+          </div>
+        </div>
       </div>
     </div>
   );
