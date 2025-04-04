@@ -9,7 +9,10 @@ import {
   Home,
   Icon as LucideIcon,
 } from "lucide-react";
-import Navbar from "../../components/Navbar/Navbar";
+
+import AccountNavbar from "../../Layout/AccountNavbar";
+
+import AccountSidebar from "../../Layout/AccountSidebar";
 
 import { useNavigate } from "react-router-dom";
 
@@ -79,7 +82,8 @@ const Loan: FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      <AccountNavbar/>
+      <AccountSidebar/>
       <div className="max-w-6xl mx-auto p-6">
         <h1 className="text-3xl font-bold text-center mb-10 text-gray-800">
           Explore Our Loan Options

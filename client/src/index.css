@@ -11,28 +11,49 @@
   }
 }
 
-.container{
-
-  max-width:1100px;
-
-  margin:0 auto;
-
-  padding-right:1rem;
-
-  padding-left:1rem;
-
+:root {
+  --white: #fff;
+  --darkPink: #ff004f;
+  --yellow: #ffd700; /* Defined color-yellow */
+  --gray: #333;
 }
 
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 3px;
   height: 12px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-yellow);
+  background: var(--yellow);
 }
 ::-webkit-scrollbar-thumb {
-  background:#333;
+  background: var(--gray);
+  border-radius: 5px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-white);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Common Button */
+.common-button {
+  font-size: 0.9rem;
+  background: var(--darkPink);
+  padding: 0.2rem 1.5rem;
+  color: var(--white);
+  border: 2px solid var(--darkPink);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.common-button:hover {
+  background: var(--white);
+  color: var(--darkPink);
 }
