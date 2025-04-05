@@ -67,6 +67,9 @@ body.dark .bg-slate-100 {
 body.dark .bg-white {
   background: #1f2937;
 }
+body.dark .bg-gray-50{
+  background: #1f2937;
+}
 body.dark .account-nav {
   background: #1f2937;
 }
