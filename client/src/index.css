@@ -46,7 +46,8 @@ body.dark {
   background: #000;
   color: var(--dark-mode-text);
 }
-body.dark .text-gray-700, body.dark .text-gray-600{
+body.dark .text-gray-700,
+body.dark .text-gray-600 {
   color: var(--dark-mode-text);
 }
 body.dark .card {
@@ -59,6 +60,9 @@ body.dark .text-gray-800 {
 }
 body.dark .text-neutral-600 {
   color: #f3f4f6;
+}
+body.dark .bg-slate-100 {
+  background: #000;
 }
 body.dark .bg-white {
   background: #1f2937;
