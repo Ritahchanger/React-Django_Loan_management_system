@@ -21,6 +21,11 @@ class Investor(models.Model):
         """Check if the investor meets the minimum deposit requirement."""
         return self.amount_deposited >= 100000
 
+    def save(self, *args, **kwargs):
+        """Override save to check eligibility before saving"""
+        if not self.is_eligible():
+            raise ValueError("Investor does not meet the minimum deposit requirement.")
+        super().save(*args, **kwargs)
 
 class Investment(models.Model):
     investor = models.ForeignKey(Investor, on_delete=models.CASCADE, related_name="investments")
@@ -30,4 +35,14 @@ class Investment(models.Model):
     status = models.CharField(max_length=20, choices=[('Pending', 'Pending'), ('Approved', 'Approved')])
 
     def __str__(self):
-        return f"Investment by {self.investor.user.username} - {self.amount_invested}"
+        return f"Investment by {self.investor.user.username} - {self.amount_invested} - Status: {self.status}"
+
+    def approve(self):
+        """Method to approve the investment."""
+        self.status = 'Approved'
+        self.save()
+
+    def deny(self):
+        """Method to deny the investment."""
+        self.status = 'Denied'
+        self.save()
