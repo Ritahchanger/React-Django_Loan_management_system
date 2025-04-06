@@ -41,11 +41,11 @@ class CustomUserViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'], permission_classes=[AllowAny])
     def login(self, request):
-        # Login
-        email = request.data.get("email")
-        password = request.data.get("password")  # FIXED: Changed : to =
+        # Login with username and password
+        username = request.data.get("username")
+        password = request.data.get("password")
 
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(request, username=username, password=password)
         if user is not None:
             token, created = Token.objects.get_or_create(user=user)
             return Response({
@@ -54,4 +54,4 @@ class CustomUserViewSet(viewsets.ModelViewSet):
                 "token": token.key
             }, status=status.HTTP_200_OK)
         else:
-            return Response({"error": "Invalid email or password"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
