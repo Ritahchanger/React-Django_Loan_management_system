@@ -7,6 +7,10 @@ import { IRoute } from "../../types/Routes.interface";
 
 import { useNavigate } from "react-router-dom";
 
+import { Moon, Sun } from "lucide-react";
+
+import { useTheme } from "../../context/ThemeContext";
+
 const navbarItems: IRoute[] = [
   {
     name: "Home",
@@ -27,6 +31,8 @@ const navbarItems: IRoute[] = [
 ];
 
 const Navbar: React.FC = () => {
+  const { theme, toggleTheme } = useTheme();
+
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -64,7 +70,15 @@ const Navbar: React.FC = () => {
             </Link>
           </div>
 
-          <div>
+          <div className="flex items-center">
+          <button
+            className="mr-[1rem]"
+              onClick={() => {
+                toggleTheme();
+              }}
+            >
+              {theme === "light" ? <Moon /> : <Sun />}
+            </button>
             <button
               className="px-6 py-2 border border-white cursor-pointer rounded-lg mr-[2rem] md:mr-0 font-semibold hover:bg-green-600 transition"
               onClick={() => {
@@ -80,6 +94,8 @@ const Navbar: React.FC = () => {
             >
               &#9776;
             </button>
+
+           
           </div>
         </div>
 

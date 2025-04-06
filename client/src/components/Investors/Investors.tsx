@@ -2,8 +2,12 @@ import { useState } from "react";
 import Title from "../Title/Title";
 import { X } from "lucide-react";
 
+import { useTheme } from "../../context/ThemeContext";
+
 const Investors = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { theme } = useTheme();
 
   const handleModalToggle = () => setIsModalOpen(!isModalOpen);
 
@@ -12,7 +16,8 @@ const Investors = () => {
       <div className="container mx-auto text-center">
         <Title title="Invest in Startups" />
         <p className="pt-3">
-          Deposit a minimum of 100,000 KSH and invest in high-potential startups.
+          Deposit a minimum of 100,000 KSH and invest in high-potential
+          startups.
         </p>
         <button
           onClick={handleModalToggle}
@@ -33,7 +38,11 @@ const Investors = () => {
               <X color="red" />
             </button>
 
-            <h4 className="text-neutral-800 text-xl font-semibold border-b border-neutral-300">
+            <h4
+              className={`${
+                theme === "light" ? "text-neutral-800" : "text-white"
+              } text-xl font-semibold border-b border-neutral-300`}
+            >
               BECOME AN INVESTOR
             </h4>
 
