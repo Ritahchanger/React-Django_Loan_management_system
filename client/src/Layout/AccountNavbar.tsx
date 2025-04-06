@@ -19,13 +19,14 @@ const AccountNavbar = () => {
 
   return (
     <Fragment>
-      <div className="h-[50px] shadow-md bg-white fixed w-full px-[1rem] account-nav">
+      <div className="h-[50px] shadow-md bg-blue-800 fixed w-full px-[1rem] account-nav">
         <div className="flex justify-between items-center h-full ">
           <div>
             <div className="text-xl font-bold logo">
               <Link to="/">LOANN</Link>
             </div>
           </div>
+
           <div className="flex items-center h-full justify-center text-neutral-600">
             <div className="h-full flex justify-center items-center mr-[2rem]">
               <button

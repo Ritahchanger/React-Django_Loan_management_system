@@ -1,9 +1,7 @@
 /* AccountSidebar.css */
 body.dark .sidebar {
   background: #1f2937;
-}
-.sidebar:hover {
-  background-color: #f8f9fa;
+  box-shadow:0 0 5px rgba(0,0,0,0.25);
 }
 
 .sidebar ul li {
@@ -14,7 +12,7 @@ body.dark .sidebar {
   background-color: #e1f5fe;
 }
 
-.sidebar ul li .text-2xl {
+.sidebar ul li .text-2xl { 
   transition: transform 0.2s ease-in-out;
 }
 

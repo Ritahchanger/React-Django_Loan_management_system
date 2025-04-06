@@ -28,7 +28,7 @@ const personalLoanOptions = [
 const PersonalLoans: React.FC = () => {
   return (
     <AccountLayout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen">
         <div className="max-w-5xl mx-auto px-6 py-10">
           <div className="text-center mb-12">
             <h1 className="text-3xl font-bold text-gray-800 mb-2">

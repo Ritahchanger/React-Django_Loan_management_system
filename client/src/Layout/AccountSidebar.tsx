@@ -13,7 +13,7 @@ const AccountSidebar: React.FC = () => {
       color: "green",
     },
     {
-      path: "#",
+      path: "/account/loan-application",
       name: "Loan Application",
       icon: <Edit />,
       color: "red",
@@ -33,12 +33,12 @@ const AccountSidebar: React.FC = () => {
   ];
 
   return (
-    <div className="fixed w-[50px] sidebar h-full shadow-md bg-white z-20">
+    <div className="fixed w-[50px] sidebar h-full shadow-lg bg-blue-800 z-20 p-[0.5rem]">
       <ul className="flex flex-col items-center ">
         {accountRoutes.map((link, index) => (
           <li
             key={index}
-            className="w-full h-[50px] border border-neutral-300 flex justify-center items-center relative mb-[10px] group"
+            className="w-full h-[40px] border border-neutral-300 flex justify-center items-center relative mb-[10px] group"
           >
             <Link
               to={link.path}

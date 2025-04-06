@@ -43,7 +43,7 @@
   background: rgba(255, 255, 255, 0.8);
 }
 body.dark {
-  background: #000;
+  background: #1f2937;
   color: var(--dark-mode-text);
 }
 body.dark .text-gray-700,
@@ -67,7 +67,7 @@ body.dark .bg-slate-100 {
 body.dark .bg-white {
   background: #1f2937;
 }
-body.dark .bg-gray-50{
+body.dark .bg-gray-50 {
   background: #1f2937;
 }
 body.dark .account-nav {

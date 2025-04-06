@@ -31,15 +31,15 @@ const testimonials: ITestimonials[] = [
       "The best loan and investment platform I've used! Transparent, secure, and truly empowering for small businesses.",
     position: "Startup Founder",
   },
-  {
-    id: 4,
-    name: "Titus Jackson",
-    urlImage:
-      "https://images.pexels.com/photos/29654702/pexels-photo-of-black-and-white-silhouette-of-woman-s-profile.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    description:
-      "I love how simple and efficient the loan process is. Funds are always accessible when I need them most.",
-    position: "Retail Business Owner",
-  },
+  // {
+  //   id: 4,
+  //   name: "Titus Jackson",
+  //   urlImage:
+  //     "https://images.pexels.com/photos/29654702/pexels-photo-of-black-and-white-silhouette-of-woman-s-profile.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  //   description:
+  //     "I love how simple and efficient the loan process is. Funds are always accessible when I need them most.",
+  //   position: "Retail Business Owner",
+  // },
 ];
 
 const Testimonials = () => {

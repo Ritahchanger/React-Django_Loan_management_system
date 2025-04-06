@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import AccountLayout from "../../../Layout/AccountLayout";
 import Title from "../../../components/Title/Title";
 
+import { useTheme } from "../../../context/ThemeContext";
+
 interface Investor {
   id: number;
   name: string;
@@ -16,6 +18,8 @@ const initialInvestors: Investor[] = [
 ];
 
 const InvestorsPage: React.FC = () => {
+  const { theme } = useTheme();
+
   const [investors, setInvestors] = useState<Investor[]>(initialInvestors);
   const [form, setForm] = useState({
     name: "",
@@ -99,7 +103,10 @@ const InvestorsPage: React.FC = () => {
         "
         >
           <table className="min-w-full table-auto text-sm">
-            <thead className="bg-gray-100 text-gray-600">
+            <thead
+              className="bg-gray-100 text-gray-600"
+              style={theme === "dark" ? { color: "#000" } : {}}
+            >
               <tr>
                 <th className="px-6 py-3 text-left">Name</th>
                 <th className="px-6 py-3 text-left">Category</th>
