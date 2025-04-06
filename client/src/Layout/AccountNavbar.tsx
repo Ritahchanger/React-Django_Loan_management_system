@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 
 import { X, Menu } from "lucide-react";
 
@@ -23,6 +23,12 @@ const AccountNavbar = ({
 }) => {
   const { theme, toggleTheme } = useTheme();
 
+  const [dropdown, showDropDown] = useState<boolean>(false);
+
+  const handleDropdown = () => {
+    showDropDown((prev) => !prev);
+  };
+
   const navigate = useNavigate();
 
   return (
@@ -46,7 +52,7 @@ const AccountNavbar = ({
           <div className="flex items-center h-full justify-center ">
             <div className="h-full flex justify-center items-center mr-[2rem]">
               <button
-                className="common-button mr-[1.2rem]"
+                className="common-button mr-[1.2rem] hidden md:block"
                 onClick={() => {
                   navigate("/");
                 }}
@@ -69,11 +75,15 @@ const AccountNavbar = ({
               <p className="ml-[1rem] font-semibold hidden md:block ">
                 Priscila Njiru
               </p>
-              <button className="ml-[1rem]">
+              <button className="ml-[1rem]" onClick={handleDropdown}>
                 <ChevronDown />
               </button>
 
-              <div className="bg-white absolute top-[100%] drop-down w-full min-w-[200px]:">
+              <div
+                className={`bg-white absolute top-[100%] drop-down right-[0rem] md:right-[0rem]   w-[180px]  md:w-full text-sm ${
+                  dropdown ? "active" : null
+                } `}
+              >
                 <button className="flex w-full justify-center border-b border-neutral-300 p-[0.4rem]">
                   LOGOUT
                 </button>

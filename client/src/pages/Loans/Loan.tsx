@@ -1,8 +1,9 @@
 import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AccountNavbar from "../../Layout/AccountNavbar";
-import AccountSidebar from "../../Layout/AccountSidebar";
-import Title from "../../components/Title/Title";
+
+
+import AccountLayout from "../../Layout/AccountLayout";
+
 import "./loan.css";
 
 const dummyLoans = {
@@ -49,102 +50,101 @@ const Loan: FC = () => {
     }`;
 
   return (
-    <div className="min-h-screen">
-      <AccountNavbar />
-      <AccountSidebar />
+    <AccountLayout>
+      <div>
+        <div className="sm:mx-[3rem] md:mx-[5rem]">
+          {/* Loan Status Section */}
+          <div className="grid grid-cols-2 gap-[1rem] pt-6">
+            <div>
+              <h1 className="text-xl  font-bold text-gray-800 mb-2">
+                YOUR LOANS
+              </h1>
+              <div className="grid grid-cols-3 status">
+                <button
+                  className={tabStyles(selectedStatusTab, "pending")}
+                  onClick={() => setSelectedStatusTab("pending")}
+                >
+                  PENDING
+                </button>
+                <button
+                  className={tabStyles(selectedStatusTab, "approved")}
+                  onClick={() => setSelectedStatusTab("approved")}
+                >
+                  APPROVED
+                </button>
+                <button
+                  className={tabStyles(selectedStatusTab, "denied")}
+                  onClick={() => setSelectedStatusTab("denied")}
+                >
+                  DENIED
+                </button>
+              </div>
 
-      <div className="p-6 sm:mx-[3rem] md:mx-[5rem]">
-        {/* Loan Status Section */}
-        <div className="grid grid-cols-2 gap-[1rem]">
-          <div>
-            <h1 className="text-xl  font-bold text-gray-800 mb-2">
-              YOUR LOANS
-            </h1>
-            <div className="grid grid-cols-3 status">
-              <button
-                className={tabStyles(selectedStatusTab, "pending")}
-                onClick={() => setSelectedStatusTab("pending")}
-              >
-                PENDING
-              </button>
-              <button
-                className={tabStyles(selectedStatusTab, "approved")}
-                onClick={() => setSelectedStatusTab("approved")}
-              >
-                APPROVED
-              </button>
-              <button
-                className={tabStyles(selectedStatusTab, "denied")}
-                onClick={() => setSelectedStatusTab("denied")}
-              >
-                DENIED
-              </button>
+              <div className="card p-4 rounded-sm  mb-10 h-[300px] overflow-y-auto">
+                <h3 className="text-lg font-semibold mb-3 capitalize">
+                  {selectedStatusTab} Loans
+                </h3>
+                <ul className="space-y-2">
+                  {dummyLoans[selectedStatusTab].map((loan) => (
+                    <li
+                      key={loan.id}
+                      className="text-sm text-gray-800 border-b border-neutral-300 py-2 flex justify-between"
+                    >
+                      <span>{loan.name}</span>
+                      <span className="font-medium">{loan.amount}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
-            <div className="card p-4 rounded-sm  mb-10 h-[300px] overflow-y-auto">
-              <h3 className="text-lg font-semibold mb-3 capitalize">
-                {selectedStatusTab} Loans
-              </h3>
-              <ul className="space-y-2">
-                {dummyLoans[selectedStatusTab].map((loan) => (
-                  <li
-                    key={loan.id}
-                    className="text-sm text-gray-800 border-b border-neutral-300 py-2 flex justify-between"
-                  >
-                    <span>{loan.name}</span>
-                    <span className="font-medium">{loan.amount}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+            {/* Loan Category Section */}
+            <div>
+              <h1 className="text-xl font-bold text-gray-800 mb-2">
+                CATEGORIES
+              </h1>
+              <div className="grid grid-cols-3 status">
+                <button
+                  className={tabStyles(selectedCategoryTab, "business")}
+                  onClick={() => setSelectedCategoryTab("business")}
+                >
+                  BUSINESS LOANS
+                </button>
+                <button
+                  className={tabStyles(selectedCategoryTab, "personal")}
+                  onClick={() => setSelectedCategoryTab("personal")}
+                >
+                  PERSONAL LOANS
+                </button>
+                <button
+                  className={tabStyles(selectedCategoryTab, "assetFinancing")}
+                  onClick={() => setSelectedCategoryTab("assetFinancing")}
+                >
+                  ASSET FINANCING
+                </button>
+              </div>
 
-          {/* Loan Category Section */}
-          <div>
-            <h1 className="text-xl font-bold text-gray-800 mb-2">
-              CATEGORIES
-            </h1>
-            <div className="grid grid-cols-3 status">
-              <button
-                className={tabStyles(selectedCategoryTab, "business")}
-                onClick={() => setSelectedCategoryTab("business")}
-              >
-                BUSINESS LOANS
-              </button>
-              <button
-                className={tabStyles(selectedCategoryTab, "personal")}
-                onClick={() => setSelectedCategoryTab("personal")}
-              >
-                PERSONAL LOANS
-              </button>
-              <button
-                className={tabStyles(selectedCategoryTab, "assetFinancing")}
-                onClick={() => setSelectedCategoryTab("assetFinancing")}
-              >
-                ASSET FINANCING
-              </button>
-            </div>
-
-            <div className="card p-4 rounded-sm  mb-10 h-[300px] overflow-y-auto">
-              <h3 className="text-lg font-semibold mb-3 capitalize">
-                {selectedCategoryTab} Loans
-              </h3>
-              <ul className="space-y-2">
-                {loanCategoryData[selectedCategoryTab].map((loan) => (
-                  <li
-                    key={loan.id}
-                    className="text-sm text-gray-800 border-b border-neutral-300 py-2 flex justify-between"
-                  >
-                    <span>{loan.name}</span>
-                    <span className="font-medium">{loan.amount}</span>
-                  </li>
-                ))}
-              </ul>
+              <div className="card p-4 rounded-sm  mb-10 h-[300px] overflow-y-auto">
+                <h3 className="text-lg font-semibold mb-3 capitalize">
+                  {selectedCategoryTab} Loans
+                </h3>
+                <ul className="space-y-2">
+                  {loanCategoryData[selectedCategoryTab].map((loan) => (
+                    <li
+                      key={loan.id}
+                      className="text-sm text-gray-800 border-b border-neutral-300 py-2 flex justify-between"
+                    >
+                      <span>{loan.name}</span>
+                      <span className="font-medium">{loan.amount}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </AccountLayout>
   );
 };
 
