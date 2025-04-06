@@ -73,17 +73,6 @@ const loanCategories: LoanCategory[] = [
   },
 ];
 
-const dummyLoans = {
-  pending: [
-    { id: 1, name: "Car Loan - Toyota", amount: "$10,000" },
-    { id: 2, name: "Education Loan - College", amount: "$5,000" },
-  ],
-  approved: [
-    { id: 3, name: "Business Expansion", amount: "$20,000" },
-    { id: 4, name: "Land Purchase", amount: "$15,000" },
-  ],
-  denied: [{ id: 5, name: "Startup Pitch - Rejected", amount: "$0" }],
-};
 
 const LoanCategories = () => {
 

@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
     <div>
-      <footer className="bg-gray-800 text-white py-6 text-center">
+      <footer className="bg-green-600 text-white py-6 text-center">
         <div className="container">
           <p>&copy; 2024 Rahisi Loans. All Rights Reserved.</p>
           <p>

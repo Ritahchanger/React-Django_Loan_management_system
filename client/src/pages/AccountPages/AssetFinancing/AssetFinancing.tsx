@@ -43,7 +43,7 @@ const AssetFinancing: React.FC = () => {
             {assetLoans.map((loan, index) => (
               <div
                 key={index}
-                className="bg-white border-l-4 rounded-2xl shadow p-6 hover:shadow-lg transition duration-300"
+                className="bg-white border-l-4 border border-neutral-300 rounded-2xl shadow p-6 hover:shadow-lg transition duration-300"
               >
                 <div className="flex items-center gap-3 mb-4">
                   {loan.icon}

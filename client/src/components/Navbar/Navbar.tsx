@@ -71,8 +71,8 @@ const Navbar: React.FC = () => {
           </div>
 
           <div className="flex items-center">
-          <button
-            className="mr-[1rem]"
+            <button
+              className="mr-[1rem]"
               onClick={() => {
                 toggleTheme();
               }}
@@ -94,8 +94,6 @@ const Navbar: React.FC = () => {
             >
               &#9776;
             </button>
-
-           
           </div>
         </div>
 
@@ -125,25 +123,23 @@ const Navbar: React.FC = () => {
                 </button>
 
                 <ul className="space-y-6 mt-10 text-lg">
-                  {["Home", "Loans", "Investors", "About Us", "Contact"].map(
-                    (item, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ x: 50, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        exit={{ x: 50, opacity: 0 }}
-                        transition={{ delay: index * 0.1 }}
+                  {navbarItems.map((item, index) => (
+                    <motion.li
+                      key={index}
+                      initial={{ x: 50, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      exit={{ x: 50, opacity: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <Link
+                        to={item.path}
+                        className="block text-sm hover:text-gray-300"
+                        onClick={() => setIsOpen(false)}
                       >
-                        <Link
-                          to={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                          className="block text-sm hover:text-gray-300"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          {item}
-                        </Link>
-                      </motion.li>
-                    )
-                  )}
+                        {item.name}
+                      </Link>
+                    </motion.li>
+                  ))}
 
                   <motion.li
                     initial={{ scale: 0.8 }}
