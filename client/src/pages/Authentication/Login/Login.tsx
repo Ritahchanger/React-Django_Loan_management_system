@@ -2,10 +2,18 @@ import { useState } from "react";
 
 import { Link } from "react-router-dom";
 
+import { useTheme } from "../../../context/ThemeContext";
+
+import Back from "../../../Layout/Back";
+
 const Login = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
+
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState("");
+
+  const { theme } = useTheme();
 
   const handleChange = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,8 +36,12 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+    <div
+      className={`flex items-center justify-center min-h-screen ${
+        theme === "light" ? "bg-gray-100" : "bg-[#1f2937]"
+      }`}
+    >
+      <div className="bg-white p-8 rounded-xl login-wrapper w-full max-w-md">
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">
           Login to Your Account
         </h2>
@@ -100,6 +112,7 @@ const Login = () => {
           </Link>
         </p>
       </div>
+      <Back/>
     </div>
   );
 };

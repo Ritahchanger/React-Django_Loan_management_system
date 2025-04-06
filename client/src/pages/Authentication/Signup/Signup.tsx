@@ -1,7 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+
+import { useTheme } from "../../../context/ThemeContext";
+
+import Back from "../../../Layout/Back";
+
 const Signup = () => {
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -10,8 +16,12 @@ const Signup = () => {
     first_name: "",
     last_name: "",
   });
+
   const [errors, setErrors] = useState<any>({});
+
   const [successMessage, setSuccessMessage] = useState("");
+
+  const { theme } = useTheme();
 
   const handleChange = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -47,8 +57,10 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-6">
-      <div className="bg-white shadow-lg rounded-lg p-8 max-w-[700px] w-full">
+    <div className="flex justify-center items-center min-h-screen  p-6">
+      <div className={`bg-white login-wrapper rounded-lg p-8 max-w-[700px] w-full ${
+        theme === "light" ? "bg-gray-100" : "bg-[#1f2937]"
+      }`}>
         <h2 className="text-2xl font-semibold text-center mb-4">Sign Up</h2>
         {successMessage && (
           <p className="text-green-600 text-center mb-4">{successMessage}</p>
@@ -151,6 +163,7 @@ const Signup = () => {
           </p>
         </form>
       </div>
+      <Back/>
     </div>
   );
 };
