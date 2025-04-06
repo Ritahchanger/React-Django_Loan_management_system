@@ -56,7 +56,7 @@ const InvestorsPage: React.FC = () => {
       <div className="p-6 space-y-6">
         <Title title="  Investors Dashboard" />
 
-        <div className="bg-white  border  border-neutral-300 rounded-sm p-4">
+        <div className="card  rounded-sm p-4">
           <h2 className="text-lg font-semibold mb-4">Add New Investor</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <input
@@ -89,7 +89,7 @@ const InvestorsPage: React.FC = () => {
             />
           </div>
           <button
-            className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            className="common-button mt-4"
             onClick={handleAddInvestor}
           >
             Add Investor
@@ -97,9 +97,9 @@ const InvestorsPage: React.FC = () => {
         </div>
 
         <div
-          className="overflow-x-auto bg-white  rounded-sm
+          className="overflow-x-auto card  rounded-sm
         
-        border border-neutral-300
+        
         "
         >
           <table className="min-w-full table-auto text-sm">

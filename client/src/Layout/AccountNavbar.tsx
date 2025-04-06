@@ -1,10 +1,12 @@
 import React, { Fragment } from "react";
 
+import { X, Menu } from "lucide-react";
+
 import { Link } from "react-router-dom";
 
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, ChevronDown } from "lucide-react";
 
-import "./accountNavbar.css"
+import "./accountNavbar.css";
 
 import { useNavigate } from "react-router-dom";
 
@@ -12,22 +14,36 @@ import { User } from "lucide-react";
 
 import { useTheme } from "../context/ThemeContext";
 
-const AccountNavbar = () => {
+const AccountNavbar = ({
+  toggleSidebar,
+  sidebar,
+}: {
+  toggleSidebar: () => void;
+  sidebar: boolean;
+}) => {
   const { theme, toggleTheme } = useTheme();
 
   const navigate = useNavigate();
 
   return (
     <Fragment>
-      <div className="h-[50px] shadow-md bg-blue-800 fixed w-full px-[1rem] account-nav">
+      <div className="h-[50px] shadow-md  fixed w-full px-[1rem] account-nav">
         <div className="flex justify-between items-center h-full ">
-          <div>
+          <div className="flex justify-between items-center">
+            <button
+              className="text-3xl mr-2 cursor-pointer"
+              onClick={() => {
+                toggleSidebar;
+              }}
+            >
+              {!sidebar ? <X /> : <Menu />}
+            </button>
             <div className="text-xl font-bold logo">
-              <Link to="/">LOANN</Link>
+              <Link to="/">User account</Link>
             </div>
           </div>
 
-          <div className="flex items-center h-full justify-center text-neutral-600">
+          <div className="flex items-center h-full justify-center ">
             <div className="h-full flex justify-center items-center mr-[2rem]">
               <button
                 className="common-button mr-[1.2rem]"
@@ -37,7 +53,7 @@ const AccountNavbar = () => {
               >
                 HOME
               </button>
-              <p className="text-neutral-600">ID:79123JDSADEEWR</p>
+              <p className="">ID:79123JDSADEEWR</p>
             </div>
             <div className="flex justify-center mr-[1rem]">
               <button
@@ -45,12 +61,26 @@ const AccountNavbar = () => {
                   toggleTheme();
                 }}
               >
-                { theme === "light" ? <Moon /> : <Sun/> }
+                {theme === "light" ? <Moon /> : <Sun />}
               </button>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center relative h-full">
               <User />
-              <p className="ml-[1rem] font-semibold ">Priscila Njiru</p>
+              <p className="ml-[1rem] font-semibold hidden md:block ">
+                Priscila Njiru
+              </p>
+              <button className="ml-[1rem]">
+                <ChevronDown />
+              </button>
+
+              <div className="bg-white absolute top-[100%] drop-down w-full min-w-[200px]:">
+                <button className="flex w-full justify-center border-b border-neutral-300 p-[0.4rem]">
+                  LOGOUT
+                </button>
+                <button className="flex w-full justify-center p-[0.4rem]">
+                  HOME
+                </button>
+              </div>
             </div>
           </div>
         </div>

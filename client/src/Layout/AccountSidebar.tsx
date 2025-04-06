@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { IRoute } from "../types/Routes.interface";
 import "./AccountSidebar.css";
 
-const AccountSidebar: React.FC = () => {
+const AccountSidebar = ({sidebar}:{sidebar:boolean}) => {
   const accountRoutes: IRoute[] = [
     {
       path: "/loans",
@@ -33,7 +33,7 @@ const AccountSidebar: React.FC = () => {
   ];
 
   return (
-    <div className="fixed w-[50px] sidebar h-full shadow-lg bg-blue-800 z-20 p-[0.5rem]">
+    <div className="fixed w-[50px] sidebar h-full shadow-lg z-20 p-[0.5rem]">
       <ul className="flex flex-col items-center ">
         {accountRoutes.map((link, index) => (
           <li

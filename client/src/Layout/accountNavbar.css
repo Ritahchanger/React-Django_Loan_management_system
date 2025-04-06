@@ -1,3 +1,22 @@
-body.dark .logo{
-    color:#F3F4F6;
+body.dark .logo {
+  color: #f3f4f6;
+}
+
+.account-nav {
+  background: #2c3e50;
+  color: var(--text-color);
+}
+
+body.dark .account-nav {
+  background: #1f2937;
+  color: #fff;
+}
+
+body .account-nav .drop-down {
+  color: #000;
+  box-shadow:0 0 5px rgba(0,0,0,0.25);
+}
+
+body.dark .account-nav button {
+  color: #fff;
 }
