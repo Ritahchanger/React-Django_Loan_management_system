@@ -1,4 +1,4 @@
-.hero {
+/* .hero {
   background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
     url("https://images.pexels.com/photos/5716032/pexels-photo-5716032.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
     width:100%;
@@ -12,4 +12,15 @@
 }
 .content{
     margin:0 auto;
+} */
+
+
+
+
+.hero {
+  height: 100vh;
+}
+
+.hero-image {
+  height: 100vh;
 }

@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="bg-green-600 text-white shadow-md fixed z-20  w-full right-0 left-0">
+      <nav className="text-white shadow-md fixed z-20  w-full right-0 left-0">
         <div className="container mx-auto px-6 py-[0.3rem] flex justify-between items-center">
           <div className="text-xl font-bold">
             <Link to="/">LOANN</Link>
@@ -174,7 +174,7 @@ const Navbar: React.FC = () => {
           )}
         </AnimatePresence>
       </nav>
-      <p style={{ paddingTop: "50px" }}></p>
+      {/* <p style={{ paddingTop: "50px" }}></p> */}
     </>
   );
 };
