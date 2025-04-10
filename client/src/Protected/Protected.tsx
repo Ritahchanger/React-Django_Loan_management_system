@@ -1,21 +1,10 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 
-interface ProtectedRouteProps{
+const ProtectedRoute = () => {
+  const isAuthenticated = sessionStorage.getItem("authToken");
 
-    children:React.ReactNode;
-
-}
-
-
-const ProtectedRoute = ({children}:ProtectedRouteProps)  => {
-
-
-    const isAuthenticated = sessionStorage.getItem("authToken");
-
-    return isAuthenticated ? children : <Navigate to="/login" replace />;
-
-    
-}
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+};
 
 export default ProtectedRoute;

@@ -10,6 +10,8 @@ import AssetFinancing from "./pages/AccountPages/AssetFinancing/AssetFinancing";
 import InvestorsPage from "./pages/AccountPages/InvestorsPage/InvestorsPage";
 import LoanApplication from "./pages/LoanApplication/LoanApplication";
 import ProjectPitching from "./pages/ProjectPitching/ProjectPitching";
+import ProtectedRoute from "./Protected/Protected";
+
 const App = () => {
   return (
     <div>
@@ -18,14 +20,22 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/loans" element={<Loan />} />
-          <Route path="/account/myinvestments" element={<MyInvestments />} />
-          <Route path="/personal-loans" element={<PersonalLoans />} />
-          <Route path="/asset-financing" element={<AssetFinancing />} />
-          <Route path="/business-loans" element={<AssetFinancing />} />
-          <Route path="/account/investors" element={<InvestorsPage />} />
-          <Route path="/account/loan-application" element={<LoanApplication/>} />
-          <Route path="/account/project-pitching" element={<ProjectPitching/>} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/loans" element={<Loan />} />
+            <Route path="/account/myinvestments" element={<MyInvestments />} />
+            <Route path="/personal-loans" element={<PersonalLoans />} />
+            <Route path="/asset-financing" element={<AssetFinancing />} />
+            <Route path="/business-loans" element={<BusinessLoans />} />
+            <Route path="/account/investors" element={<InvestorsPage />} />
+            <Route
+              path="/account/loan-application"
+              element={<LoanApplication />}
+            />
+            <Route
+              path="/account/project-pitching"
+              element={<ProjectPitching />}
+            />
+          </Route>
         </Routes>
       </BrowserRouter>
     </div>

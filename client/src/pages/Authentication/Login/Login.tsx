@@ -4,13 +4,27 @@ import { useTheme } from "../../../context/ThemeContext";
 import Back from "../../../Layout/Back";
 import axios from "axios";
 import { baseUrl } from "../../../Config/Config";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../store/redux/Store";
+import { login } from "../../../store/redux/authSlice";
+
+interface LoginResponse {
+  token: string;
+  user: {
+    id: number;
+    username: string;
+    role: string;
+  };
+}
 
 const Login = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const { theme } = useTheme();
+
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { theme } = useTheme();
-  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,23 +36,20 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await axios.post(`${baseUrl}users/login/`, formData);
+      const response = await axios.post<LoginResponse>(
+        `${baseUrl}users/login/`,
+        formData
+      );
 
-      const { token, user } = response.data;
-
-      sessionStorage.setItem("authToken", token);
-      sessionStorage.setItem("user", JSON.stringify(user));
-
-      if (user.role === "borrower") {
+      dispatch(login(response.data));
+      const role = response.data.user?.role;
+      if (role === "borrower") {
         navigate("/loans");
         return;
       }
-
-    
     } catch (err: any) {
       setError(
-        err.response?.data?.message ||
-          "An error occurred while logging in. Please try again."
+        err.response?.data?.message || "Use correct username and password"
       );
     } finally {
       setLoading(false);
