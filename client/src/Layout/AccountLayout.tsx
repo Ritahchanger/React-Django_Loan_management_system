@@ -14,7 +14,7 @@ const AccountLayout = ({ children }: { children: ReactNode }) => {
     <div>
       <AccountNavbar toggleSidebar={toggleSidebar} sidebar={sidebar} />
       <AccountSidebar sidebar={sidebar} />
-      <main className="px-[50px]">{children}</main>
+      <main className="px-[20px]">{children}</main>
       <Back />
     </div>
   );

@@ -6,6 +6,8 @@ import { userProjectsResponse } from "../../types/userprojects.interface";
 import { RootState } from "../../store/redux/Store";
 import { baseUrl } from "../../Config/Config";
 
+import { CheckCircle } from "lucide-react";
+
 const Project = () => {
   const { user, token } = useSelector((state: RootState) => state.auth);
   const [projects, setProjects] = useState<userProjectsResponse[]>([]);
@@ -56,7 +58,7 @@ const Project = () => {
 
   return (
     <AccountLayout>
-      <div className="px-4 py-6">
+      <div className="py-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Projects</h2>
         {projects.length === 0 ? (
           <div className="text-gray-500">No projects found.</div>
@@ -65,29 +67,38 @@ const Project = () => {
             {projects.map((project) => (
               <div
                 key={project.id}
-                className="bg-white shadow-md border border-gray-200 rounded-lg p-4 hover:shadow-lg transition-shadow duration-300"
+                className="bg-white  border border-gray-200 rounded-lg p-4 hover:shadow-lg transition-shadow duration-300 flex justify-between items-center"
               >
-                <h3 className="text-xl font-semibold text-blue-600 mb-2">
-                  {project.title}
-                </h3>
-                <p className="text-sm text-gray-600 mb-1">
-                  <strong>Category:</strong> {project.category}
-                </p>
-                <p className="text-sm text-gray-600 mb-1">
-                  <strong>Status:</strong> {project.status}
-                </p>
-                <p className="text-sm text-gray-600 mb-1">
-                  <strong>Budget:</strong> ${project.budget}
-                </p>
-                <p className="text-sm text-gray-600 mb-1">
+                <div className="">
+                  <h3 className="text-xl font-semibold text-blue-600 mb-2">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-1">
+                    <strong>Category:</strong> {project.category}
+                  </p>
+                  {project.status !== "active" ? (
+                    <button className="bg-green-500 text-white px-[2rem] py-[0.1rem] rounded-sm">
+                      {project.status}
+                    </button>
+                  ) : (
+                    <button className="bg-red-500 inline-flex justify-between items-center text-white px-[2rem] py-[0.1rem] rounded-sm">
+                      Funded <CheckCircle />
+                    </button>
+                  )}
+                  <p className="text-sm text-gray-600 mb-1">
+                    <strong>Budget:</strong> ${project.budget}
+                  </p>
+                  {/* <p className="text-sm text-gray-600 mb-1">
                   <strong>Problem:</strong> {project.problem}
                 </p>
                 <p className="text-sm text-gray-600 mb-1">
                   <strong>Solution:</strong> {project.solution}
-                </p>
-                <p className="text-sm text-gray-600">
+                </p> */}
+                  {/* <p className="text-sm text-gray-600">
                   <strong>Goals:</strong> {project.goals}
-                </p>
+                </p> */}
+                </div>
+                <button className="bg-red-500 h-[30px] px-[1rem] rounded-sm text-white">view</button>
               </div>
             ))}
           </div>

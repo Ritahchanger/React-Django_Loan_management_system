@@ -69,7 +69,7 @@ const AccountSidebar = () => {
       : accountRoutes;
 
   return (
-    <div className="fixed w-[50px] sidebar h-full shadow-lg z-20 p-[0.5rem] bg-white">
+    <div className="fixed w-[50px] sidebar h-full shadow-lg z-20 p-[0.5rem]  bg-white">
       <ul className="flex flex-col items-center">
         {filteredRoutes.map((link, index) => (
           <li
