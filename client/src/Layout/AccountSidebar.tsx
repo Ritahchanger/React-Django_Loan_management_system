@@ -1,10 +1,10 @@
 import React from "react";
-import { FileText, Edit, Calculator, Users } from "lucide-react";
+import { FileText, Edit, Calculator, Users, Presentation } from "lucide-react";
 import { Link } from "react-router-dom";
 import { IRoute } from "../types/Routes.interface";
 import "./AccountSidebar.css";
 
-const AccountSidebar = ({sidebar}:{sidebar:boolean}) => {
+const AccountSidebar = ({ sidebar }: { sidebar: boolean }) => {
   const accountRoutes: IRoute[] = [
     {
       path: "/loans",
@@ -22,6 +22,18 @@ const AccountSidebar = ({sidebar}:{sidebar:boolean}) => {
       path: "#",
       name: "Loan Calculator",
       icon: <Calculator />,
+      color: "blue",
+    },
+    {
+      path: "/account/project-pitching",
+      name: "Project pitching",
+      icon: <Presentation />,
+      color: "blue",
+    },
+    {
+      path: "/account/myinvestments",
+      name: "My Investments",
+      icon: <Presentation />,
       color: "blue",
     },
     {

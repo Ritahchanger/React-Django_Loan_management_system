@@ -1,38 +1,48 @@
 import { useState } from "react";
-
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../../../context/ThemeContext";
-
 import Back from "../../../Layout/Back";
+import axios from "axios";
+import { baseUrl } from "../../../Config/Config";
 
 const Login = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
-
   const [loading, setLoading] = useState(false);
-
   const [error, setError] = useState("");
-
   const { theme } = useTheme();
+  const navigate = useNavigate();
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    // Simulate API Call
-    setTimeout(() => {
-      if (formData.username === "user" && formData.password === "password") {
-        alert("Login Successful!");
-      } else {
-        setError("Invalid username or password");
+    try {
+      const response = await axios.post(`${baseUrl}users/login/`, formData);
+
+      const { token, user } = response.data;
+
+      sessionStorage.setItem("authToken", token);
+      sessionStorage.setItem("user", JSON.stringify(user));
+
+      if (user.role === "borrower") {
+        navigate("/loans");
+        return;
       }
+
+    
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message ||
+          "An error occurred while logging in. Please try again."
+      );
+    } finally {
       setLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -64,7 +74,6 @@ const Login = () => {
             />
           </div>
 
-          {/* Password */}
           <div>
             <label className="block text-gray-600 text-sm font-medium">
               Password
@@ -80,7 +89,6 @@ const Login = () => {
             />
           </div>
 
-          {/* Remember Me & Forgot Password */}
           <div className="flex items-center justify-between text-sm text-gray-600">
             <label className="flex items-center">
               <input type="checkbox" className="mr-2" /> Remember me
@@ -90,7 +98,6 @@ const Login = () => {
             </a>
           </div>
 
-          {/* Login Button */}
           <button
             type="submit"
             className={`w-full text-white py-3 rounded-lg transition ${
@@ -104,7 +111,6 @@ const Login = () => {
           </button>
         </form>
 
-        {/* Sign-up Link */}
         <p className="text-center text-sm text-gray-600 mt-4">
           Don't have an account?{" "}
           <Link to="/signup" className="text-blue-500 hover:underline">
@@ -112,7 +118,7 @@ const Login = () => {
           </Link>
         </p>
       </div>
-      <Back/>
+      <Back />
     </div>
   );
 };

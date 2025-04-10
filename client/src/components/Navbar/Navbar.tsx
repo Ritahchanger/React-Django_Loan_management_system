@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 import { Link } from "react-router-dom";
+
 import { motion, AnimatePresence } from "framer-motion";
+
 import { X } from "lucide-react";
 
 import { IRoute } from "../../types/Routes.interface";
@@ -21,12 +24,12 @@ const navbarItems: IRoute[] = [
     path: "/loans",
   },
   {
-    name: "Investors",
-    path: "/investors",
-  },
-  {
     name: "About us",
     path: "/aboutus",
+  },
+  {
+    name: "Popular Pitches",
+    path: "/popular/pitches",
   },
 ];
 
@@ -37,12 +40,32 @@ const Navbar: React.FC = () => {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY >= 90) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <>
-      <nav className="text-white shadow-md fixed z-20  w-full right-0 left-0">
+      <nav
+        className={`text-white shadow-md fixed z-20 ${
+          scrolled ? "bg-[#1f2937] scrolled-nav text-[#000]" : null
+        }  w-full right-0 left-0`}
+      >
         <div className="container mx-auto px-6 py-[0.3rem] flex justify-between items-center">
           <div className="text-xl font-bold">
-            <Link to="/">LOANN</Link>
+            <Link to="/">Lendsecure</Link>
           </div>
 
           <ul className="hidden md:flex space-x-6">
@@ -82,7 +105,7 @@ const Navbar: React.FC = () => {
             <button
               className="px-6 py-2 border border-white cursor-pointer rounded-lg mr-[2rem] md:mr-0 font-semibold hover:bg-green-600 transition"
               onClick={() => {
-                navigate("/myinvestments");
+                navigate("/account/myinvestments");
               }}
             >
               My investments

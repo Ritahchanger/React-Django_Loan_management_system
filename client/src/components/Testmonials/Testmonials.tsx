@@ -44,14 +44,14 @@ const testimonials: ITestimonials[] = [
 
 const Testimonials = () => {
   return (
-    <div className="bg-green-500 py-[6rem]">
+    <div className="py-[6rem]">
       <div className="container mx-auto px-4">
         <Title title="Testimonials" />
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.id}
-              className="bg-white border border-neutral-200 p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+              className="bg-white border border-neutral-200 p-6 rounded-sm shadow-md hover:shadow-lg transition-all duration-300"
             >
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-neutral-300 mr-4">

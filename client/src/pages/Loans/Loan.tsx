@@ -43,7 +43,7 @@ const Loan: FC = () => {
   >("business");
 
   const tabStyles = (activeTab: string, currentTab: string) =>
-    `py-2 px-4 font-semibold transition ${
+    `py-2 px-4 font-semibold transition text-sm ${
       activeTab === currentTab
         ? "bg-blue-600 text-white"
         : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -59,7 +59,7 @@ const Loan: FC = () => {
               <h1 className="text-xl  font-bold text-gray-800 mb-2">
                 YOUR LOANS
               </h1>
-              <div className="grid grid-cols-3 status">
+              <div className="grid grid-cols-3 status text-sm">
                 <button
                   className={tabStyles(selectedStatusTab, "pending")}
                   onClick={() => setSelectedStatusTab("pending")}
@@ -103,9 +103,10 @@ const Loan: FC = () => {
               <h1 className="text-xl font-bold text-gray-800 mb-2">
                 CATEGORIES
               </h1>
-              <div className="grid grid-cols-3 status">
+              <div className="grid grid-cols-3 status text-sm">
                 <button
                   className={tabStyles(selectedCategoryTab, "business")}
+  
                   onClick={() => setSelectedCategoryTab("business")}
                 >
                   BUSINESS LOANS
