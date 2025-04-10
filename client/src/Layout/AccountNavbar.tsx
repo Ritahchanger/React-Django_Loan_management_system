@@ -33,7 +33,7 @@ const AccountNavbar = ({
 
   return (
     <Fragment>
-      <div className="h-[50px] shadow-md  fixed w-full px-[1rem] account-nav">
+      <div className="h-[50px] shadow-md  fixed w-full px-[1rem] account-nav z-30">
         <div className="flex justify-between items-center h-full ">
           <div className="flex justify-between items-center">
             <button

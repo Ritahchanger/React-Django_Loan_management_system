@@ -6,6 +6,7 @@ import { userProjectsResponse } from "../../types/userprojects.interface";
 import { RootState } from "../../store/redux/Store";
 import { baseUrl } from "../../Config/Config";
 
+import ProjectModal from "./ProjectModal";
 import { CheckCircle } from "lucide-react";
 
 const Project = () => {
@@ -13,7 +14,22 @@ const Project = () => {
   const [projects, setProjects] = useState<userProjectsResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
+
+  const [projectModal, displayProjectModal] = useState<boolean>(false);
+  const [selectedProject, setSelectedProject] =
+    useState<userProjectsResponse | null>(null);
+
   const id = parseInt(user.id);
+
+  const openProjectModal = (project: userProjectsResponse) => {
+    setSelectedProject(project);
+    displayProjectModal(true);
+  };
+
+  const closeProjectModal = () => {
+    setSelectedProject(null);
+    displayProjectModal(false);
+  };
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -36,7 +52,7 @@ const Project = () => {
     };
 
     fetchProjects();
-  }, [id]);
+  }, [id, token]);
 
   if (loading) {
     return (
@@ -60,6 +76,7 @@ const Project = () => {
     <AccountLayout>
       <div className="py-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Projects</h2>
+
         {projects.length === 0 ? (
           <div className="text-gray-500">No projects found.</div>
         ) : (
@@ -67,43 +84,60 @@ const Project = () => {
             {projects.map((project) => (
               <div
                 key={project.id}
-                className="bg-white  border border-gray-200 rounded-lg p-4 hover:shadow-lg transition-shadow duration-300 flex justify-between items-center"
+                className="bg-white border border-gray-200 rounded-sm p-4 shadow-sm hover:shadow-md transition duration-300 transform hover:scale-[1.01] flex justify-between items-center"
               >
-                <div className="">
-                  <h3 className="text-xl font-semibold text-blue-600 mb-2">
+                <div>
+                  <h3 className="text-lg font-semibold text-blue-700 mb-2 truncate">
                     {project.title}
                   </h3>
                   <p className="text-sm text-gray-600 mb-1">
-                    <strong>Category:</strong> {project.category}
+                    <span className="font-medium text-gray-700">Category:</span>{" "}
+                    {project.category}
                   </p>
-                  {project.status !== "active" ? (
-                    <button className="bg-green-500 text-white px-[2rem] py-[0.1rem] rounded-sm">
-                      {project.status}
-                    </button>
-                  ) : (
-                    <button className="bg-red-500 inline-flex justify-between items-center text-white px-[2rem] py-[0.1rem] rounded-sm">
-                      Funded <CheckCircle />
-                    </button>
-                  )}
                   <p className="text-sm text-gray-600 mb-1">
-                    <strong>Budget:</strong> ${project.budget}
+                    <span className="font-medium text-gray-700">Budget:</span> $
+                    {project.budget}
                   </p>
-                  {/* <p className="text-sm text-gray-600 mb-1">
-                  <strong>Problem:</strong> {project.problem}
-                </p>
-                <p className="text-sm text-gray-600 mb-1">
-                  <strong>Solution:</strong> {project.solution}
-                </p> */}
-                  {/* <p className="text-sm text-gray-600">
-                  <strong>Goals:</strong> {project.goals}
-                </p> */}
+                  <p className="text-sm text-gray-600 mb-3">
+                    <span className="font-medium text-gray-700">Status:</span>{" "}
+                    <span
+                      className={`inline-flex items-center px-3 py-0.5 rounded-full text-xs font-medium ${
+                        project.status !== "active"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {project.status === "active" ? (
+                        <>
+                          Funded <CheckCircle className="ml-1 w-4 h-4" />
+                        </>
+                      ) : (
+                        project.status
+                      )}
+                    </span>
+                  </p>
                 </div>
-                <button className="bg-red-500 h-[30px] px-[1rem] rounded-sm text-white">view</button>
+
+                <div className="flex justify-end">
+                  <button
+                    onClick={() => openProjectModal(project)}
+                    className="mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-1.5 rounded-sm transition"
+                  >
+                    View
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         )}
       </div>
+
+      {projectModal && selectedProject && (
+        <ProjectModal
+          selectedProject={selectedProject}
+          closeModal={closeProjectModal}
+        />
+      )}
     </AccountLayout>
   );
 };

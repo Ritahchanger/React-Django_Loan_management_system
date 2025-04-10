@@ -1,7 +1,14 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import AccountLayout from "../../Layout/AccountLayout";
+import { baseUrl } from "../../Config/Config";
+import axios from "axios";
+
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/redux/Store";
 
 const ProjectPitching = () => {
+  const { user, token } = useSelector((state: RootState) => state.auth);
+
   const [formData, setFormData] = useState({
     title: "",
     category: "",
@@ -12,13 +19,15 @@ const ProjectPitching = () => {
     file: null as File | null,
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
 
     if (e.target instanceof HTMLInputElement && e.target.type === "file") {
       setFormData({
         ...formData,
-        [name]: e.target.files ? e.target.files[0] : null,
+        file: e.target.files ? e.target.files[0] : null,
       });
     } else {
       setFormData({
@@ -28,9 +37,49 @@ const ProjectPitching = () => {
     }
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
+
+    try {
+      const payload = new FormData();
+      payload.append("title", formData.title);
+      payload.append("category", formData.category);
+      payload.append("problem", formData.problem);
+      payload.append("solution", formData.solution);
+      payload.append("goals", formData.goals);
+      payload.append("budget", formData.budget);
+      payload.append("status", "pending");
+
+      if (formData.file) {
+        payload.append("file", formData.file);
+      }
+
+      const response = await axios.post(`${baseUrl}projects/pitch/`, payload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Token ${token}`,
+        },
+      });
+
+      console.log(response);
+
+      if (response.status === 201 || response.status === 200) {
+        alert("Project pitch submitted successfully!");
+        // Clear form
+        setFormData({
+          title: "",
+          category: "",
+          problem: "",
+          solution: "",
+          goals: "",
+          budget: "",
+          file: null,
+        });
+      }
+    } catch (error: any) {
+      console.error("Error submitting pitch:", error);
+      alert("Failed to submit pitch. Please try again.");
+    }
   };
 
   return (
