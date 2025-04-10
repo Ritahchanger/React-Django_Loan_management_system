@@ -34,6 +34,13 @@ const AccountSidebar = () => {
     },
     {
       id: 4,
+      path: "/account/projects",
+      name: "Projects",
+      icon: <Presentation />,
+      color: "text-blue-500",
+    },
+    {
+      id: 4,
       path: "/account/project-pitching",
       name: "Project pitching",
       icon: <Presentation />,

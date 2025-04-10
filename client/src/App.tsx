@@ -11,7 +11,7 @@ import InvestorsPage from "./pages/AccountPages/InvestorsPage/InvestorsPage";
 import LoanApplication from "./pages/LoanApplication/LoanApplication";
 import ProjectPitching from "./pages/ProjectPitching/ProjectPitching";
 import ProtectedRoute from "./Protected/Protected";
-
+import Project from "./pages/Projects/Project";
 const App = () => {
   return (
     <div>
@@ -23,6 +23,7 @@ const App = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/loans" element={<Loan />} />
             <Route path="/account/myinvestments" element={<MyInvestments />} />
+            <Route path="/account/projects" element={<Project />} />
             <Route path="/personal-loans" element={<PersonalLoans />} />
             <Route path="/asset-financing" element={<AssetFinancing />} />
             <Route path="/business-loans" element={<BusinessLoans />} />

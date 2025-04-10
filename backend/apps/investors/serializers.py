@@ -1,36 +1,39 @@
 from rest_framework import serializers
-from .models import Investor, Investment
 from django.contrib.auth import get_user_model
+from rest_framework.exceptions import ValidationError
 
-class InvestorSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(queryset=get_user_model().objects.all())  # Allow user to be referenced by ID
-    sector = serializers.ChoiceField(choices=Investor.SECTOR_CHOICES)
-    amount_deposited = serializers.DecimalField(max_digits=12, decimal_places=2)
+CustomUser = get_user_model()  # This will point to your CustomUser model
 
+class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Investor
-        fields = ['id', 'user', 'sector', 'amount_deposited']
+        model = CustomUser
+        fields = ['id', 'username', 'email', 'role', 'phone_number', 'is_verified', 'investment_amount', 'first_name', 'last_name']
 
-    def validate_amount_deposited(self, value):
-        """Validate that the deposited amount meets the minimum requirement."""
-        if value < 100000:
-            raise serializers.ValidationError("Investor must deposit at least 100,000.")
+    def validate_investment_amount(self, value):
+        # Ensure that investors must have an investment amount of at least 100,000
+        if self.instance and self.instance.role == 'investor' and value and value < 100000:
+            raise ValidationError("Investment amount must be at least 100,000 Ksh for investors.")
         return value
 
-
-class InvestmentSerializer(serializers.ModelSerializer):
-    investor = serializers.PrimaryKeyRelatedField(queryset=Investor.objects.all())
-    amount_invested = serializers.DecimalField(max_digits=12, decimal_places=2)
-    sector = serializers.ChoiceField(choices=Investor.SECTOR_CHOICES)
-    status = serializers.ChoiceField(choices=[('Pending', 'Pending'), ('Approved', 'Approved'), ('Denied', 'Denied')])
-
+class RegisterUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Investment
-        fields = ['id', 'investor', 'amount_invested', 'sector', 'status', 'created_at']
+        model = CustomUser
+        fields = ['username', 'email', 'password', 'role', 'phone_number']
 
-    def validate(self, data):
-        """Custom validation for investment amount."""
-        investor = data.get('investor')
-        if investor.amount_deposited < 100000:
-            raise serializers.ValidationError("Investor does not meet the minimum deposit requirement.")
-        return data
+    # Ensuring that password is required and handled properly
+    def create(self, validated_data):
+        user = CustomUser.objects.create_user(**validated_data)
+        return user
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'email', 'role', 'phone_number', 'is_verified', 'investment_amount', 'first_name', 'last_name']
+        read_only_fields = ['email', 'username']
+
+    def update(self, instance, validated_data):
+        # Custom update logic if needed (e.g., updating investment_amount for investors)
+        if 'investment_amount' in validated_data:
+            instance.investment_amount = validated_data['investment_amount']
+        return super().update(instance, validated_data)
+

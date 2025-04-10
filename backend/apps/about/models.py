@@ -1,8 +1,6 @@
 from django.db import models
 
 class AboutUs(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=100)
     content = models.TextField()
-
-    def __str__(self):
-        return self.title
+    updated_at = models.DateTimeField(auto_now=True)

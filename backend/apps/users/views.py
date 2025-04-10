@@ -1,57 +1,153 @@
-from rest_framework import viewsets, status
+from rest_framework import status, permissions
 from rest_framework.response import Response
-from rest_framework.decorators import action
-from .models import CustomUser
-from .serializers import UserSerializer, CustomUserSerializer
-
-from rest_framework.permissions import AllowAny
-from django.contrib.auth import authenticate
+from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate
+from apps.users.models import CustomUser
+from apps.users.serializers import (
+    CustomUserSerializer,
+    RegisterUserSerializer,
+    UserProfileSerializer,
+)
+from apps.projects.models import Project
+from apps.projects.serializers import ProjectSerializer
 
-# User viewsets to handle CRUD operations
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all()
-    serializer_class = UserSerializer
 
-    # You can add custom actions like user verification or changing passwords here
-    @action(detail=True, methods=['post'])
-    def verify(self, request, pk=None):
-        user = self.get_object()
-        user.is_verified = True
-        user.save()
-        return Response({"message": "User successfully verified"}, status=status.HTTP_200_OK)
+class LoginUserView(APIView):
+    permission_classes = [permissions.AllowAny]  # Allow any user to login
 
-class CustomUserViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
-    permission_classes = [AllowAny]
-    http_method_names = ['get', 'post', 'put', 'patch']
-
-    def create(self, request, *args, **kwargs):
-        # Signup
-        response = super().create(request, *args, **kwargs)
-        user = CustomUser.objects.get(id=response.data['id'])
-        token, created = Token.objects.get_or_create(user=user)
-
-        return Response({
-            "message": "Signup successful",
-            "user": response.data,
-            "token": token.key
-        }, status=status.HTTP_201_CREATED)
-
-    @action(detail=False, methods=['post'], permission_classes=[AllowAny])
-    def login(self, request):
-        # Login with username and password
+    def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
 
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
+        if not username or not password:
+            return Response(
+                {
+                    "detail": "Username and password are required.",
+                    "status": 400,
+                    "success": False,
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        user = authenticate(username=username, password=password)
+
+        if user:
             token, created = Token.objects.get_or_create(user=user)
-            return Response({
-                "message": "Login successful",
-                "user_id": user.id,
-                "token": token.key
-            }, status=status.HTTP_200_OK)
+            return Response(
+                {
+                    "token": token.key,
+                    "user": CustomUserSerializer(user).data,
+                    "success": True,
+                },
+                status=status.HTTP_200_OK,
+            )
         else:
-            return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"detail": "Invalid credentials.",status:400,"success":False}, status=status.HTTP_200_OK
+            )
+
+
+class RegisterUserView(APIView):
+    permission_classes = []  # Allow anyone to register
+
+    def post(self, request):
+        serializer = RegisterUserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response(
+                {"message": "User created successfully."},
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserProfileView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, user_id=None):
+        # Ensure the user is viewing their own profile or is an admin
+        if request.user.id != user_id and request.user.role != "admin":
+            return Response(
+                {"detail": "You do not have permission to view this user's profile."},
+                status=403,
+            )
+
+        try:
+            user = CustomUser.objects.get(id=user_id)
+        except CustomUser.DoesNotExist:
+            return Response(
+                {"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = UserProfileSerializer(user)
+        return Response(serializer.data)
+
+
+class UserView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, action=None):
+        if action == "login":
+            return LoginUserView.as_view()(request)
+
+        elif action == "signup":
+            return RegisterUserView.as_view()(request)
+
+        return Response(
+            {"detail": "Invalid action."}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+    def get(self, request, user_id=None, action=None):
+        if action == "projects":
+            if request.user.id != user_id and request.user.role != "admin":
+                return Response(
+                    {
+                        "detail": "You do not have permission to view this user's projects."
+                    },
+                    status=403,
+                )
+
+            projects = Project.objects.filter(pitched_by=user_id)
+            serializer = ProjectSerializer(projects, many=True)
+            return Response(serializer.data)
+
+        elif action == "investors":
+            if request.user.id != user_id and request.user.role != "admin":
+                return Response(
+                    {
+                        "detail": "You do not have permission to view this user's investors."
+                    },
+                    status=403,
+                )
+
+            investors = CustomUser.objects.filter(
+                role="investor", investment_amount__gte=100000
+            )
+            invested_projects = Project.objects.filter(pitched_by=user_id)
+
+            if not invested_projects or not investors:
+                return Response(
+                    {
+                        "detail": "No investors found or no projects pitched by this user."
+                    },
+                    status=404,
+                )
+
+            invested_in_user = []
+            for investor in investors:
+                for project in invested_projects:
+                    if project.pitched_by == investor:
+                        invested_in_user.append(investor)
+
+            if not invested_in_user:
+                return Response(
+                    {"detail": "No investors found for this user."}, status=404
+                )
+
+            serializer = CustomUserSerializer(invested_in_user, many=True)
+            return Response(serializer.data)
+
+        return Response(
+            {"detail": "Invalid action."}, status=status.HTTP_400_BAD_REQUEST
+        )

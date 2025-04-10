@@ -1,45 +1,50 @@
 from django.db import models
-from django.conf import settings
+from apps.users.models import CustomUser
 
 class LoanCategory(models.Model):
-    CATEGORY_CHOICES = [
-        ('Business', 'Business'),
-        ('Personal', 'Personal'),
-        ('Asset Financing', 'Asset Financing')
+    MAIN_CATEGORY_CHOICES = [
+        ('business', 'Business'),
+        ('personal', 'Personal'),
+        ('asset', 'Asset Financing')
     ]
-    name = models.CharField(max_length=50, choices=CATEGORY_CHOICES, unique=True)
+    name = models.CharField(max_length=100)
+    main_category = models.CharField(max_length=20, choices=MAIN_CATEGORY_CHOICES, default='business')
 
     def __str__(self):
-        return self.name
+        return f"{self.main_category} - {self.name}"
 
-class Loan(models.Model):
-    LOAN_SUBCATEGORIES = [
-        ('Startup Pitch', 'Startup Pitch'),
-        ('Business Growth', 'Business Growth'),
-        ('Education', 'Education'),
-        ('Emergency', 'Emergency'),
-        ('Car Logbook Loan', 'Car Logbook Loan'),
-        ('Nunua/Jenga', 'Nunua/Jenga'),
-        ('Land Financing', 'Land Financing')
+
+class LoanApplication(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('denied', 'Denied')
     ]
-
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     category = models.ForeignKey(LoanCategory, on_delete=models.CASCADE)
-    subcategory = models.CharField(max_length=50, choices=LOAN_SUBCATEGORIES)
-    amount_requested = models.DecimalField(max_digits=12, decimal_places=2)
-    interest_rate = models.FloatField(default=12.5)
-    repayment_period = models.IntegerField(help_text="Repayment period in months")
-    status = models.CharField(
-        max_length=20,
-        choices=[('Approved', 'Approved'), ('Denied', 'Denied'), ('Pending', 'Pending')],
-        default='Pending'
-    )
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    duration_months = models.IntegerField()
+    reason = models.TextField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    approved_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def calculate_total_repayment(self):
-        """Loan calculator function: calculates total repayment"""
-        total_interest = (self.amount_requested * (self.interest_rate / 100)) * self.repayment_period
-        return self.amount_requested + total_interest
+class StartupPitch(models.Model):
+    CATEGORY_CHOICES = [
+        ('health', 'Health'),
+        ('tech', 'Tech'),
+        ('agriculture', 'Agriculture'),
+        ('education', 'Education'),
+        ('fintech', 'Fintech')
+    ]
+    founder = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    title = models.CharField(max_length=255)
+    pitch_description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"{self.user.username} - {self.category} - {self.status}"
+class Investment(models.Model):
+    investor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='investments')
+    project = models.ForeignKey(StartupPitch, on_delete=models.CASCADE, related_name='investments')
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    invested_at = models.DateTimeField(auto_now_add=True)

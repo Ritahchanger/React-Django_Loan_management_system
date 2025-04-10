@@ -1,26 +1,23 @@
-# apps/users/admin.py
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
 
+@admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
-    list_display = ('username', 'email', 'is_verified', 'is_staff', 'date_joined')
-    list_filter = ('is_verified', 'is_staff', 'is_active', 'groups')
-    search_fields = ('username', 'email')
+    list_display = ('username', 'email', 'role', 'is_verified', 'investment_amount', 'is_staff')
+    list_filter = ('role', 'is_verified', 'is_staff', 'is_superuser')
+    search_fields = ('username', 'email', 'phone_number')
     ordering = ('-date_joined',)
-    fieldsets = (
-        (None, {'fields': ('username', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'email', 'is_verified')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login', 'date_joined')}),
-    )
-    add_fieldsets = (
-        (None, {'fields': ('username', 'password1', 'password2')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'email', 'is_verified')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {
+            'fields': ('role', 'phone_number', 'is_verified', 'investment_amount')
+        }),
     )
 
-# Registering the CustomUser model
-admin.site.register(CustomUser, CustomUserAdmin)
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        (None, {
+            'fields': ('role', 'phone_number', 'is_verified', 'investment_amount'),
+        }),
+    )
