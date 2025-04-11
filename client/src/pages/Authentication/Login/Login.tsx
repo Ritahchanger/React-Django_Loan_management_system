@@ -6,7 +6,7 @@ import axios from "axios";
 import { baseUrl } from "../../../Config/Config";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../store/redux/Store";
-import { login } from "../../../store/redux/authSlice";
+import { login } from "../../../store/slices/authSlice";
 
 interface LoginResponse {
   token: string;

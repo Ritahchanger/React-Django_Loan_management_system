@@ -14,13 +14,15 @@ import { User } from "lucide-react";
 
 import { useTheme } from "../context/ThemeContext";
 
-const AccountNavbar = ({
-  toggleSidebar,
-  sidebar,
-}: {
-  toggleSidebar: () => void;
-  sidebar: boolean;
-}) => {
+import { toggleSidebar } from "../store/slices/SidebarSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/redux/Store";
+
+const AccountNavbar = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { isSidebarShown } = useSelector((state: RootState) => state.sidebar);
+
   const { theme, toggleTheme } = useTheme();
 
   const [dropdown, showDropDown] = useState<boolean>(false);
@@ -39,10 +41,10 @@ const AccountNavbar = ({
             <button
               className="text-3xl mr-2 cursor-pointer"
               onClick={() => {
-                toggleSidebar;
+                dispatch(toggleSidebar());
               }}
             >
-              {!sidebar ? <X /> : <Menu />}
+              {isSidebarShown ? <X /> : <Menu />}
             </button>
             <div className="text-xl font-bold logo">
               <Link to="/">User account</Link>

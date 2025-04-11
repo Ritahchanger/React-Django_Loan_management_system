@@ -1,15 +1,18 @@
-import AccountLayout from "../../Layout/AccountLayout";
+import AccountLayout from "../../../Layout/AccountLayout";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { userProjectsResponse } from "../../types/userprojects.interface";
-import { RootState } from "../../store/redux/Store";
-import { baseUrl } from "../../Config/Config";
+import { userProjectsResponse } from "../../../types/userprojects.interface";
 
-import ProjectModal from "./ProjectModal";
+import { RootState } from "../../../store/redux/Store";
+
+import { baseUrl } from "../../../Config/Config";
+
+import ProjectModal from "../../Projects/ProjectModal";
+
 import { CheckCircle } from "lucide-react";
 
-const Project = () => {
+const AllPitches = () => {
   const { user, token } = useSelector((state: RootState) => state.auth);
   const [projects, setProjects] = useState<userProjectsResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -34,14 +37,11 @@ const Project = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get(
-          `${baseUrl}projects/user-projects/${id}/`,
-          {
-            headers: {
-              Authorization: `Token ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${baseUrl}projects/list/`, {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        });
 
         setProjects(response.data);
       } catch (err) {
@@ -75,7 +75,9 @@ const Project = () => {
   return (
     <AccountLayout>
       <div className="py-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Projects</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">
+          Projects Pitches
+        </h2>
 
         {projects.length === 0 ? (
           <div className="text-gray-500">No projects found.</div>
@@ -118,13 +120,22 @@ const Project = () => {
                   </p>
                 </div>
 
-                <div className="flex justify-end">
+                <div className="flex flex-col justify-end">
                   <button
                     onClick={() => openProjectModal(project)}
                     className="mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-1.5 rounded-sm transition"
                   >
                     View
                   </button>
+
+                  {project.status !== "funded" && (
+                    <button
+                      onClick={() => openProjectModal(project)}
+                      className="mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-1.5 rounded-sm transition"
+                    >
+                      Invest
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -142,4 +153,4 @@ const Project = () => {
   );
 };
 
-export default Project;
+export default AllPitches;

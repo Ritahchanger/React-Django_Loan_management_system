@@ -12,6 +12,7 @@ import LoanApplication from "./pages/LoanApplication/LoanApplication";
 import ProjectPitching from "./pages/ProjectPitching/ProjectPitching";
 import ProtectedRoute from "./Protected/Protected";
 import Project from "./pages/Projects/Project";
+import AllPitches from "./pages/AccountPages/Pitches/Pitches";
 const App = () => {
   return (
     <div>
@@ -36,6 +37,7 @@ const App = () => {
               path="/account/project-pitching"
               element={<ProjectPitching />}
             />
+            <Route path="/account/pitches" element={<AllPitches />} />
           </Route>
         </Routes>
       </BrowserRouter>
