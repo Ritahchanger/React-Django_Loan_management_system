@@ -35,13 +35,13 @@ const AccountSidebar = () => {
       icon: <FilePlus />,
       color: "text-red-500",
     },
-    {
-      id: 3,
-      path: "/account/loan-calculator",
-      name: "Loan Calculator",
-      icon: <Calculator />,
-      color: "text-blue-500",
-    },
+    // {
+    //   id: 3,
+    //   path: "/account/loan-calculator",
+    //   name: "Loan Calculator",
+    //   icon: <Calculator />,
+    //   color: "text-blue-500",
+    // },
     {
       id: 4,
       path: "/account/projects",
@@ -89,15 +89,15 @@ const AccountSidebar = () => {
 
   return (
     <div
-      className={`fixed w-[50px] sidebar h-full shadow-lg z-20 p-[0.5rem]  bg-white ${
+      className={`fixed w-[60px] sidebar h-full shadow-lg z-20 p-[0.5rem]  bg-white ${
         !isSidebarShown ? "hidden" : "visible"
       }`}
     >
-      <ul className="flex flex-col items-center">
+      <ul className="flex flex-col items-center border border-neutral-300 rounded-md">
         {filteredRoutes.map((link, index) => (
           <li
             key={index}
-            className="w-full h-[40px] border border-neutral-300 flex justify-center items-center relative mb-[10px] group"
+            className="w-full h-[60px] flex justify-center items-center relative  group"
           >
             <Link
               to={link.path}

@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 
 const Investors = () => {
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { theme } = useTheme();

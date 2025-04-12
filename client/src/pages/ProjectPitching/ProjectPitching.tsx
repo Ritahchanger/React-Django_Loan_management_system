@@ -20,7 +20,7 @@ const ProjectPitching = () => {
   });
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
 
@@ -102,15 +102,21 @@ const ProjectPitching = () => {
 
           <div>
             <label className="block mb-1 font-medium">Category</label>
-            <input
-              type="text"
+            <select
               name="category"
               value={formData.category}
               onChange={handleChange}
               required
               className="w-full border border-neutral-300 rounded px-4 py-2"
-              placeholder="e.g. Technology, Health, Finance"
-            />
+            >
+              <option value="">Select Category</option>
+              <option value="Finance">Finance</option>
+              <option value="Agriculture">Agriculture</option>
+              <option value="Education">Education</option>
+              <option value="Health">Health</option>
+              <option value="Fintech">Fintech</option>
+              <option value="Tech">Tech</option>
+            </select>
           </div>
 
           <div>

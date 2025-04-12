@@ -6,6 +6,9 @@ import AccountLayout from "../../Layout/AccountLayout";
 
 import "./loan.css";
 
+import LoanApplicationForm from "./LoanApplication";
+
+
 const dummyLoans = {
   pending: [
     { id: 1, name: "Car Loan - Toyota", amount: "$10,000" },
@@ -52,9 +55,9 @@ const Loan: FC = () => {
   return (
     <AccountLayout>
       <div>
-        <div className="sm:mx-[3rem] md:mx-[5rem]">
-          {/* Loan Status Section */}
-          <div className="grid grid-cols-2 gap-[1rem] pt-6">
+        <div className="">
+          <LoanApplicationForm/>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[1rem] pt-6">
             <div>
               <h1 className="text-xl  font-bold text-gray-800 mb-2">
                 YOUR LOANS

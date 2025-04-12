@@ -3,9 +3,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from .models import Project
-from .serializers import ProjectSerializer, ProjectInvestmentSerializer
+from .serializers import ProjectSerializer,InvestmentSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.exceptions import ValidationError
+
 
 CustomUser = get_user_model()
 
@@ -42,38 +43,15 @@ class ProjectUserView(generics.ListAPIView):
         return Project.objects.filter(pitched_by_id=user_id)
 
 # View for viewing and investing in projects
-class ProjectInvestmentView(generics.GenericAPIView):
-    serializer_class = ProjectInvestmentSerializer
+
+
+class MakeInvestmentView(generics.CreateAPIView):
+
+
+    serializer_class = InvestmentSerializer
+
     permission_classes = [IsAuthenticated]
 
-    @action(detail=True, methods=["post"])
-    def invest(self, request, pk=None):
-        project = generics.get_object_or_404(Project, pk=pk)
-        user = request.user
+    def perform_create(self,serializer):
 
-        # Check if the user is an investor
-        if user.role != "investor":
-            raise ValidationError("Only investors can invest in projects.")
-
-        # Validate the investment amount
-        investment_serializer = self.get_serializer(data=request.data)
-        investment_serializer.is_valid(raise_exception=True)
-        investment_amount = investment_serializer.validated_data["amount"]
-
-        if investment_amount > user.investment_amount:
-            raise ValidationError("Insufficient funds to invest in this project.")
-
-        # Deduct the investment from user's available amount
-        user.investment_amount -= investment_amount
-        user.save()
-
-        # Here you can add logic to track investments for projects
-
-        # Mark project as funded if investment exceeds or meets the goal
-        if project.budget <= investment_amount:
-            project.status = "funded"
-            project.save()
-
-        return Response(
-            {"message": "Investment successful!"}, status=status.HTTP_200_OK
-        )
+        serializer.save(investor=self.request.user)

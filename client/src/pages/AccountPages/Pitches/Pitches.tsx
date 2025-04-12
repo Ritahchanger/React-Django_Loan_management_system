@@ -12,7 +12,15 @@ import ProjectModal from "../../Projects/ProjectModal";
 
 import { CheckCircle } from "lucide-react";
 
+import { useTheme } from "../../../context/ThemeContext";
+
+import AddInvestor from "./AddInvestor";
+
 const AllPitches = () => {
+  const [isInvestorModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalToggle = () => setIsModalOpen(!isInvestorModalOpen);
+
   const { user, token } = useSelector((state: RootState) => state.auth);
   const [projects, setProjects] = useState<userProjectsResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -130,8 +138,8 @@ const AllPitches = () => {
 
                   {project.status !== "funded" && (
                     <button
-                      onClick={() => openProjectModal(project)}
                       className="mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-1.5 rounded-sm transition"
+                      onClick={handleModalToggle}
                     >
                       Invest
                     </button>
@@ -142,6 +150,10 @@ const AllPitches = () => {
           </div>
         )}
       </div>
+
+      {isInvestorModalOpen && (
+        <AddInvestor handleModalToggle={handleModalToggle} />
+      )}
 
       {projectModal && selectedProject && (
         <ProjectModal
