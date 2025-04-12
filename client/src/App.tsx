@@ -13,10 +13,14 @@ import ProjectPitching from "./pages/ProjectPitching/ProjectPitching";
 import ProtectedRoute from "./Protected/Protected";
 import Project from "./pages/Projects/Project";
 import AllPitches from "./pages/AccountPages/Pitches/Pitches";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const App = () => {
   return (
     <div>
       <BrowserRouter>
+      <ToastContainer />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />

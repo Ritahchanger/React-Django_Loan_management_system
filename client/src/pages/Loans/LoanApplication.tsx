@@ -5,6 +5,8 @@ import { baseUrl } from "../../Config/Config";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/redux/Store";
 
+import { toast } from "react-toastify";
+
 const LoanApplicationForm: React.FC = () => {
   const { token, user } = useSelector((state: RootState) => state.auth);
   const [category, setCategory] = useState<string>("business");
@@ -37,9 +39,9 @@ const LoanApplicationForm: React.FC = () => {
       console.log(response.data);
       setSuccess(true);
       setError(null);
-      alert("Loan application submitted successfully!");
+      toast.success("Loan application submitted successfully!");
     } catch (err) {
-      setError("Error submitting loan application. Please try again.");
+      toast.error("Error submitting loan application. Please try again.");
       setSuccess(false);
       console.error("Error submitting loan application:", err);
     }
