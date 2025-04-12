@@ -25,6 +25,9 @@ class LoanApplicationSerializer(serializers.ModelSerializer):
         if value <= 0:
             raise serializers.ValidationError("Duration must be a positive number of months.")
         return value
+    
+
+   
 
     # Optional: Add logic to calculate or adjust the `approved_at` field based on status
     def validate(self, data):

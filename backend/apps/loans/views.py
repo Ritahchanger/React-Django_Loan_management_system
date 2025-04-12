@@ -9,14 +9,18 @@ class LoanApplicationListCreateView(generics.ListCreateAPIView):
     serializer_class = LoanApplicationSerializer
     permission_classes = [IsAuthenticated]  # Only authenticated users can access
 
-
     def get_queryset(self):
-
-        return LoanApplication.objects.filter(user=self.request.user);
+        if self.request.user.is_authenticated:
+            print("Authenticated User: ", self.request.user)
+            return LoanApplication.objects.filter(user=self.request.user)
+        else:
+            print("User is not authenticated")
+            return LoanApplication.objects.none()
 
     def perform_create(self, serializer):
-        # Optionally, you can set additional fields (e.g., user) automatically based on the logged-in user
         serializer.save(user=self.request.user)
+
+
 
 # View to retrieve, update, or delete a loan application
 class LoanApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
