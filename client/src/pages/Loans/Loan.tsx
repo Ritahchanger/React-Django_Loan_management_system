@@ -1,151 +1,86 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-
 import AccountLayout from "../../Layout/AccountLayout";
 
+import axios from "axios";
+import { baseUrl } from "../../Config/Config";
 import "./loan.css";
-
-import LoanApplicationForm from "./LoanApplication";
-
-
-const dummyLoans = {
-  pending: [
-    { id: 1, name: "Car Loan - Toyota", amount: "$10,000" },
-    { id: 2, name: "Education Loan - College", amount: "$5,000" },
-  ],
-  approved: [
-    { id: 3, name: "Business Expansion", amount: "$20,000" },
-    { id: 4, name: "Land Purchase", amount: "$15,000" },
-  ],
-  denied: [{ id: 5, name: "Startup Pitch - Rejected", amount: "$0" }],
-};
-
-const loanCategoryData = {
-  business: [
-    { id: 6, name: "Business Loan - Cafe Setup", amount: "$12,000" },
-    { id: 7, name: "Inventory Restocking", amount: "$8,000" },
-  ],
-  personal: [
-    { id: 8, name: "Wedding Loan", amount: "$6,500" },
-    { id: 9, name: "Medical Emergency", amount: "$3,200" },
-  ],
-  assetFinancing: [
-    { id: 10, name: "Car Lease", amount: "$14,000" },
-    { id: 11, name: "Machinery Purchase", amount: "$18,000" },
-  ],
-};
-
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/redux/Store";
 const Loan: FC = () => {
-  const navigate = useNavigate();
-  const [selectedStatusTab, setSelectedStatusTab] = useState<
-    "pending" | "approved" | "denied"
-  >("pending");
-  const [selectedCategoryTab, setSelectedCategoryTab] = useState<
-    "business" | "personal" | "assetFinancing"
-  >("business");
+  const { token } = useSelector((state: RootState) => state.auth);
 
-  const tabStyles = (activeTab: string, currentTab: string) =>
-    `py-2 px-4 font-semibold transition text-sm ${
-      activeTab === currentTab
-        ? "bg-blue-600 text-white"
-        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-    }`;
+  const [loans, setLoans] = useState<any[]>([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchLoans = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}loans/loan-applications/`, {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        });
+        setLoans(response.data);
+      } catch (error) {
+        console.error("Error fetching loan applications", error);
+      }
+    };
+
+    fetchLoans();
+  }, []);
 
   return (
     <AccountLayout>
-      <div>
-        <div className="">
-          <LoanApplicationForm/>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[1rem] pt-6">
-            <div>
-              <h1 className="text-xl  font-bold text-gray-800 mb-2">
-                YOUR LOANS
-              </h1>
-              <div className="grid grid-cols-3 status text-sm">
-                <button
-                  className={tabStyles(selectedStatusTab, "pending")}
-                  onClick={() => setSelectedStatusTab("pending")}
-                >
-                  PENDING
-                </button>
-                <button
-                  className={tabStyles(selectedStatusTab, "approved")}
-                  onClick={() => setSelectedStatusTab("approved")}
-                >
-                  APPROVED
-                </button>
-                <button
-                  className={tabStyles(selectedStatusTab, "denied")}
-                  onClick={() => setSelectedStatusTab("denied")}
-                >
-                  DENIED
-                </button>
-              </div>
-
-              <div className="card p-4 rounded-sm  mb-10 h-[300px] overflow-y-auto">
-                <h3 className="text-lg font-semibold mb-3 capitalize">
-                  {selectedStatusTab} Loans
-                </h3>
-                <ul className="space-y-2">
-                  {dummyLoans[selectedStatusTab].map((loan) => (
-                    <li
-                      key={loan.id}
-                      className="text-sm text-gray-800 border-b border-neutral-300 py-2 flex justify-between"
-                    >
-                      <span>{loan.name}</span>
-                      <span className="font-medium">{loan.amount}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Loan Category Section */}
-            <div>
-              <h1 className="text-xl font-bold text-gray-800 mb-2">
-                CATEGORIES
-              </h1>
-              <div className="grid grid-cols-3 status text-sm">
-                <button
-                  className={tabStyles(selectedCategoryTab, "business")}
-  
-                  onClick={() => setSelectedCategoryTab("business")}
-                >
-                  BUSINESS LOANS
-                </button>
-                <button
-                  className={tabStyles(selectedCategoryTab, "personal")}
-                  onClick={() => setSelectedCategoryTab("personal")}
-                >
-                  PERSONAL LOANS
-                </button>
-                <button
-                  className={tabStyles(selectedCategoryTab, "assetFinancing")}
-                  onClick={() => setSelectedCategoryTab("assetFinancing")}
-                >
-                  ASSET FINANCING
-                </button>
-              </div>
-
-              <div className="card p-4 rounded-sm  mb-10 h-[300px] overflow-y-auto">
-                <h3 className="text-lg font-semibold mb-3 capitalize">
-                  {selectedCategoryTab} Loans
-                </h3>
-                <ul className="space-y-2">
-                  {loanCategoryData[selectedCategoryTab].map((loan) => (
-                    <li
-                      key={loan.id}
-                      className="text-sm text-gray-800 border-b border-neutral-300 py-2 flex justify-between"
-                    >
-                      <span>{loan.name}</span>
-                      <span className="font-medium">{loan.amount}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
+      <div className="py-6">
+        <div className="mt-6 overflow-x-auto">
+          {/* Display loans in a table */}
+          <table className="min-w-full  border border-gray-200 rounded-lg shadow-md">
+            <thead>
+              <tr className="bg-blue-500 text-left">
+                <th className="px-6 py-3 text-sm font-medium text-gray-700">
+                  ID
+                </th>
+                <th className="px-6 py-3 text-sm font-medium text-gray-700">
+                  Category
+                </th>
+                <th className="px-6 py-3 text-sm font-medium text-gray-700">
+                  Amount
+                </th>
+                <th className="px-6 py-3 text-sm font-medium text-gray-700">
+                  Duration (Months)
+                </th>
+                <th className="px-6 py-3 text-sm font-medium text-gray-700">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-sm font-medium text-gray-700">
+                  Created At
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {loans.map((loan) => (
+                <tr key={loan.id} className="border border-neutral-300">
+                  <td className="px-6 py-4 text-sm text-[#000]">{loan.id}</td>
+                  <td className="px-6 py-4 text-sm text-[#000]">
+                    {loan.category}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-[#000]">
+                    {loan.amount}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-[#000]">
+                    {loan.duration_months}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-[#000]">
+                    {loan.status}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-[#000]">
+                    {new Date(loan.created_at).toLocaleString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </AccountLayout>
