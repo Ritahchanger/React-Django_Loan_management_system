@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import { Fragment, useState } from "react";
 
 import { X, Menu } from "lucide-react";
 
@@ -18,6 +18,8 @@ import { toggleSidebar } from "../store/slices/SidebarSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/redux/Store";
 
+import { logout } from "../store/slices/authSlice";
+
 const AccountNavbar = () => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -32,6 +34,11 @@ const AccountNavbar = () => {
   };
 
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
 
   return (
     <Fragment>
@@ -86,10 +93,13 @@ const AccountNavbar = () => {
                   dropdown ? "active" : null
                 } `}
               >
-                <button className="flex w-full justify-center border-b border-neutral-300 p-[0.4rem]">
+                <button
+                  className="flex w-full justify-center border-b border-neutral-300 p-[0.4rem] cursor-pointer"
+                  onClick={handleLogout}
+                >
                   LOGOUT
                 </button>
-                <button className="flex w-full justify-center p-[0.4rem]">
+                <button className="flex w-full justify-center p-[0.4rem] cursor-pointer">
                   HOME
                 </button>
               </div>

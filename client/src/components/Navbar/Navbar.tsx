@@ -26,11 +26,7 @@ const navbarItems: IRoute[] = [
   {
     name: "About us",
     path: "/aboutus",
-  },
-  {
-    name: "Popular Pitches",
-    path: "/popular/pitches",
-  },
+  }
 ];
 
 const Navbar: React.FC = () => {
