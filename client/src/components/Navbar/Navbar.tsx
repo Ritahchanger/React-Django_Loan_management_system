@@ -14,6 +14,12 @@ import { Moon, Sun } from "lucide-react";
 
 import { useTheme } from "../../context/ThemeContext";
 
+import { useSelector, useDispatch } from "react-redux";
+
+import { logout } from "../../store/slices/authSlice";
+
+import { AppDispatch, RootState } from "../../store/redux/Store";
+
 const navbarItems: IRoute[] = [
   {
     name: "Home",
@@ -26,17 +32,25 @@ const navbarItems: IRoute[] = [
   {
     name: "About us",
     path: "/aboutus",
-  }
+  },
 ];
 
 const Navbar: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
+
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const [scrolled, setScrolled] = useState(false);
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,18 +89,30 @@ const Navbar: React.FC = () => {
           </ul>
 
           <div className="hidden md:flex space-x-4">
-            <Link
-              to="/login"
-              className="px-4 py-1 border rounded hover:bg-white hover:text-green-600 transition"
-            >
-              Login
-            </Link>
-            <Link
-              to="/signup"
-              className="px-4 py-1 border rounded bg-white text-green-600 hover:bg-gray-200 transition"
-            >
-              Sign Up
-            </Link>
+            {!isAuthenticated ? (
+              <Link
+                to="/login"
+                className="px-4 py-1 border rounded hover:bg-white hover:text-green-600 transition"
+              >
+                Login
+              </Link>
+            ) : (
+              <button
+                className="px-4 py-1 border rounded hover:bg-white hover:text-green-600 transition"
+                onClick={handleLogout}
+              >
+                LOGOUT
+              </button>
+            )}
+
+            {!isAuthenticated && (
+              <Link
+                to="/signup"
+                className="px-4 py-1 border rounded bg-white text-green-600 hover:bg-gray-200 transition"
+              >
+                Sign Up
+              </Link>
+            )}
           </div>
 
           <div className="flex items-center">

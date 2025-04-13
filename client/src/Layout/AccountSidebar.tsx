@@ -83,7 +83,11 @@ const AccountSidebar = () => {
   const filteredRoutes =
     role === "borrower"
       ? accountRoutes.filter(
-          (route) => route.id !== 6 && route.id !== 8 && route.id !== 7
+          (route) =>
+            route.id !== 6 &&
+            route.id !== 8 &&
+            route.id !== 7 &&
+            route.id !== 10
         )
       : accountRoutes;
 

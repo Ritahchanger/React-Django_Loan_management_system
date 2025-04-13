@@ -25,6 +25,8 @@ const AccountNavbar = () => {
 
   const { isSidebarShown } = useSelector((state: RootState) => state.sidebar);
 
+  const { user } = useSelector((state: RootState) => state.auth);
+
   const { theme, toggleTheme } = useTheme();
 
   const [dropdown, showDropDown] = useState<boolean>(false);
@@ -68,7 +70,7 @@ const AccountNavbar = () => {
               >
                 HOME
               </button>
-              <p className="">ID:79123JDSADEEWR</p>
+              <p className="">ID:{`${user.id}`}</p>
             </div>
             <div className="flex justify-center mr-[1rem]">
               <button
@@ -82,7 +84,7 @@ const AccountNavbar = () => {
             <div className="flex items-center relative h-full">
               <User />
               <p className="ml-[1rem] font-semibold hidden md:block ">
-                Priscila Njiru
+                {user.username}
               </p>
               <button className="ml-[1rem]" onClick={handleDropdown}>
                 <ChevronDown />
@@ -99,7 +101,12 @@ const AccountNavbar = () => {
                 >
                   LOGOUT
                 </button>
-                <button className="flex w-full justify-center p-[0.4rem] cursor-pointer">
+                <button
+                  className="flex w-full justify-center p-[0.4rem] cursor-pointer"
+                  onClick={() => {
+                    navigate("/");
+                  }}
+                >
                   HOME
                 </button>
               </div>

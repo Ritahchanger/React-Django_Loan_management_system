@@ -6,15 +6,19 @@ import { useTheme } from "../../../context/ThemeContext";
 
 import Back from "../../../Layout/Back";
 
+import { baseUrl } from "../../../Config/Config";
+import { toast } from "react-toastify";
+
+import { useNavigate } from "react-router-dom";
+
 const Signup = () => {
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
-    first_name: "",
-    last_name: "",
   });
 
   const [errors, setErrors] = useState<any>({});
@@ -38,19 +42,21 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/signup/",
-        formData
-      );
+      const response = await axios.post(`${baseUrl}users/register/`, formData);
       setSuccessMessage(response.data.message);
       setFormData({
         username: "",
         email: "",
         password: "",
         confirmPassword: "",
-        first_name: "",
-        last_name: "",
       });
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        navigate("/login");
+      } else {
+        toast.error(response.data.message);
+      }
     } catch (error: any) {
       setErrors(error.response?.data || { general: "An error occurred" });
     }
@@ -58,27 +64,27 @@ const Signup = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen  p-6">
-      <div className={`bg-white login-wrapper rounded-lg p-8 max-w-[700px] w-full ${
-        theme === "light" ? "bg-gray-100" : "bg-[#1f2937]"
-      }`}>
+      <div
+        className={`bg-white login-wrapper rounded-lg p-8 max-w-[700px] w-full ${
+          theme === "light" ? "bg-gray-100" : "bg-[#1f2937]"
+        }`}
+      >
         <h2 className="text-2xl font-semibold text-center mb-4">Sign Up</h2>
-        {successMessage && (
-          <p className="text-green-600 text-center mb-4">{successMessage}</p>
-        )}
+
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium">Username</label>
-            <input
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500"
-              required
-            />
-          </div>
           <div className="grid grid-cols-2 gap-[10px]">
             <div>
+              <label className="block text-sm font-medium">Username</label>
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500"
+                required
+              />
+            </div>
+            <div className="">
               <label className="block text-sm font-medium">Email</label>
               <input
                 type="email"
@@ -89,31 +95,8 @@ const Signup = () => {
                 required
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium">First Name</label>
-              <input
-                type="text"
-                name="first_name"
-                value={formData.first_name}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg border-neutral-300 focus:outline-none focus:ring focus:border-blue-500"
-                required
-              />
-            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium">Last Name</label>
-            <input
-              type="text"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg 
-              border-neutral-300
-              focus:outline-none focus:ring focus:border-blue-500"
-              required
-            />
-          </div>
+
           <div className="grid grid-cols-2 gap-[10px]">
             <div>
               <label className="block text-sm font-medium">Password</label>
@@ -146,6 +129,19 @@ const Signup = () => {
               )}
             </div>
           </div>
+
+          <div>
+            <select
+              name="role"
+              id=""
+              className="w-full w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500"
+            >
+              <option value="">select your role</option>
+              <option value="borrower">BORROWER</option>
+              <option value="investor">INVESTOR</option>
+            </select>
+          </div>
+          <div></div>
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
@@ -163,7 +159,7 @@ const Signup = () => {
           </p>
         </form>
       </div>
-      <Back/>
+      <Back />
     </div>
   );
 };

@@ -44,7 +44,8 @@ class LoginUserView(APIView):
             )
         else:
             return Response(
-                {"detail": "Invalid credentials.",status:400,"success":False}, status=status.HTTP_200_OK
+                {"detail": "Invalid credentials.", status: 400, "success": False},
+                status=status.HTTP_200_OK,
             )
 
 
@@ -52,14 +53,48 @@ class RegisterUserView(APIView):
     permission_classes = []  # Allow anyone to register
 
     def post(self, request):
-        serializer = RegisterUserSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
+        data = request.data.copy()
+
+        email = data.get("email")
+        username = data.get("username")
+
+        # Check if email already exists
+        if CustomUser.objects.filter(email=email).exists():
             return Response(
-                {"message": "User created successfully."},
-                status=status.HTTP_201_CREATED,
+                {"success": False, "message": "Email already exists.", "status": 400},
+                status=status.HTTP_200_OK,
             )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if username already exists
+        if CustomUser.objects.filter(username=username).exists():
+            return Response(
+                {
+                    "success": False,
+                    "message": "Username already exists.",
+                    "status": 400,
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        # Don't send confirmPassword to serializer
+        data.pop("confirmPassword", None)
+
+        serializer = RegisterUserSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "success": True,
+                    "message": "User created successfully.",
+                    "status": 201,
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        return Response(
+            {"success": False, "errors": serializer.errors, "status": 400},
+            status=status.HTTP_200_OK,
+        )
 
 
 class UserProfileView(APIView):
