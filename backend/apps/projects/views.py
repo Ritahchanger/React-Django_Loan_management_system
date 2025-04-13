@@ -7,6 +7,8 @@ from .serializers import ProjectSerializer,InvestmentSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.exceptions import ValidationError
 
+from django.db.models import Sum
+
 
 CustomUser = get_user_model()
 
@@ -61,3 +63,14 @@ class MakeInvestmentView(generics.CreateAPIView):
 
       
         serializer.save(investor=self.request.user)
+
+        total_invested = project.investments.aggregate(total=Sum('amount'))['total'] or 0
+
+
+        if total_invested >= project.budget:
+
+            project.status = 'funded'
+
+
+            project.save()
+

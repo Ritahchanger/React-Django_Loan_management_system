@@ -1,24 +1,76 @@
 import { useTheme } from "../../../context/ThemeContext";
+
 import { useState } from "react";
+
 import { X } from "lucide-react";
+
+import { baseUrl } from "../../../Config/Config";
+
+import { useAuthHeaders } from "../../../Config/Config";
+
+import axios from "axios";
+
+import { useSelector } from "react-redux";
+
+import { RootState } from "../../../store/redux/Store";
+
 const AddInvestor = ({
   handleModalToggle,
+
+  fetchProjects,
+
+  projectId,
 }: {
   handleModalToggle: () => void;
+  fetchProjects: () => void;
+  projectId: string;
 }) => {
-  const { theme } = useTheme(); // Get the theme from context
-  const [amount, setAmount] = useState(""); // State for the investment amount
-  const [investmentType, setInvestmentType] = useState("health"); // State for the investment type
-  const [returnRate, setReturnRate] = useState(""); // State for the return rate
+  const { token } = useSelector((state: RootState) => state.auth);
 
-  const handleSubmit = () => {
-    // Handle the form submission, e.g., send data to API
-    console.log({ amount, investmentType, returnRate });
+  const { theme } = useTheme();
+
+  const [loading, setLoading] = useState(false);
+
+  const [amount, setAmount] = useState("");
+
+  const authHeaders = useAuthHeaders();
+
+  const handleSubmit = async () => {
+    console.log(parseInt(projectId));
+
+    if (!amount || parseFloat(amount) <= 0) {
+      alert("Please enter a valid investment amount greater than 0.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        `${baseUrl}projects/investments/`,
+        {
+          project: parseInt(projectId),
+          amount: parseFloat(amount),
+        },
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        }
+      );
+
+      await fetchProjects();
+      alert("Investment submitted successfully!");
+      handleModalToggle();
+    } catch (error) {
+      console.error("Investment failed:", error);
+      alert("Investment failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
-
   return (
-    <div className="fixed z-40 inset-0 bg-black/40 flex items-center justify-center">
-      <div className="bg-white max-w-[500px] w-[97%] p-[1rem] relative">
+    <div className="fixed z-40 inset-0 bg-black/50 flex items-center justify-center ">
+      <div className="bg-white max-w-[500px] w-[97%] p-[1rem] relative rounded-md">
         <button
           onClick={handleModalToggle}
           className="absolute right-[1rem] top-[1rem]"
@@ -27,11 +79,11 @@ const AddInvestor = ({
         </button>
 
         <h4
-          className={`${
+          className={`text-center  ${
             theme === "light" ? "text-neutral-800" : "text-white"
           } text-xl font-semibold border-b border-neutral-300`}
         >
-          BECOME AN INVESTOR
+          INVEST IN THIS PROJECT
         </h4>
 
         <div className="my-2">
@@ -45,37 +97,14 @@ const AddInvestor = ({
           />
         </div>
 
-        <div className="my-2">
-          <select
-            name="investmentType"
-            value={investmentType}
-            onChange={(e) => setInvestmentType(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded mt-2"
-          >
-            <option value="health">Health</option>
-            <option value="tech">Tech</option>
-            <option value="agriculture">Agriculture</option>
-            <option value="education">Education</option>
-            <option value="fintech">Fintech</option>
-          </select>
-        </div>
-
-        <div className="my-2">
-          <input
-            type="text"
-            name="returnrate"
-            value={returnRate}
-            onChange={(e) => setReturnRate(e.target.value)}
-            placeholder="Enter expected return rate (%)"
-            className="w-full p-2 border border-gray-300 rounded mt-2"
-          />
-        </div>
-
         <button
           onClick={handleSubmit}
-          className="mt-4 bg-blue-600 text-white px-4 py-2 rounded w-full"
+          disabled={loading}
+          className={`mt-4 ${
+            loading ? "bg-blue-400" : "bg-blue-600"
+          } text-white px-4 py-2 rounded w-full`}
         >
-          Submit Investment
+          {loading ? "Submitting..." : "Submit Investment"}
         </button>
       </div>
     </div>

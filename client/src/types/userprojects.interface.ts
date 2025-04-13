@@ -10,6 +10,7 @@ interface userProjectsResponse {
   status: string;
   total_invested: string;
   investors_list: string[];
+  pitched_by_username?:string
 }
 
 export type { userProjectsResponse };

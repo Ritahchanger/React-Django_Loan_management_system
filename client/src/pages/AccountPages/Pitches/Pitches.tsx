@@ -1,7 +1,11 @@
 import AccountLayout from "../../../Layout/AccountLayout";
+
 import { useEffect, useState } from "react";
+
 import { useSelector } from "react-redux";
+
 import axios from "axios";
+
 import { userProjectsResponse } from "../../../types/userprojects.interface";
 
 import { RootState } from "../../../store/redux/Store";
@@ -12,8 +16,6 @@ import ProjectModal from "../../Projects/ProjectModal";
 
 import { CheckCircle } from "lucide-react";
 
-import { useTheme } from "../../../context/ThemeContext";
-
 import AddInvestor from "./AddInvestor";
 
 const AllPitches = () => {
@@ -22,11 +24,17 @@ const AllPitches = () => {
   const handleModalToggle = () => setIsModalOpen(!isInvestorModalOpen);
 
   const { user, token } = useSelector((state: RootState) => state.auth);
+
   const [projects, setProjects] = useState<userProjectsResponse[]>([]);
+
   const [loading, setLoading] = useState<boolean>(true);
+
+  const [projectId, setProjectId] = useState("");
+
   const [error, setError] = useState<string>("");
 
   const [projectModal, displayProjectModal] = useState<boolean>(false);
+
   const [selectedProject, setSelectedProject] =
     useState<userProjectsResponse | null>(null);
 
@@ -34,31 +42,32 @@ const AllPitches = () => {
 
   const openProjectModal = (project: userProjectsResponse) => {
     setSelectedProject(project);
+
     displayProjectModal(true);
   };
 
   const closeProjectModal = () => {
     setSelectedProject(null);
+
     displayProjectModal(false);
   };
 
+  const fetchProjects = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}projects/list/`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
+
+      setProjects(response.data);
+    } catch (err) {
+      setError("Failed to fetch projects.");
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await axios.get(`${baseUrl}projects/list/`, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        });
-
-        setProjects(response.data);
-      } catch (err) {
-        setError("Failed to fetch projects.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProjects();
   }, [id, token]);
 
@@ -117,32 +126,43 @@ const AllPitches = () => {
                           : "bg-red-100 text-red-800"
                       }`}
                     >
-                      {project.status === "active" ? (
+                      {project.status !== "active" ? (
                         <>
                           Funded <CheckCircle className="ml-1 w-4 h-4" />
                         </>
                       ) : (
-                        project.status
+                        <p>Pending</p>
                       )}
                     </span>
+                  </p>
+                  <p className="text-green-700 border-b ">
+                    {project.pitched_by_username}
                   </p>
                 </div>
 
                 <div className="flex flex-col justify-end">
                   <button
-                    onClick={() => openProjectModal(project)}
+                    onClick={() => {
+                      openProjectModal(project);
+                    }}
                     className="mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-1.5 rounded-sm transition"
                   >
                     View
                   </button>
 
                   {project.status !== "funded" && (
-                    <button
-                      className="mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-1.5 rounded-sm transition"
-                      onClick={handleModalToggle}
-                    >
-                      Invest
-                    </button>
+                    <>
+                      <button
+                        className="mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-1.5 rounded-sm transition"
+                        onClick={() => {
+                          setProjectId(project.id.toString());
+                          handleModalToggle();
+                        }}
+                      >
+                        Invest
+                      </button>
+                      <p>${project.total_invested} invested!</p>
+                    </>
                   )}
                 </div>
               </div>
@@ -152,7 +172,11 @@ const AllPitches = () => {
       </div>
 
       {isInvestorModalOpen && (
-        <AddInvestor handleModalToggle={handleModalToggle} />
+        <AddInvestor
+          handleModalToggle={handleModalToggle}
+          projectId={projectId}
+          fetchProjects={fetchProjects}
+        />
       )}
 
       {projectModal && selectedProject && (

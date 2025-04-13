@@ -9,6 +9,8 @@ import { baseUrl } from "../../Config/Config";
 import ProjectModal from "./ProjectModal";
 import { CheckCircle } from "lucide-react";
 
+
+
 const Project = () => {
   const { user, token } = useSelector((state: RootState) => state.auth);
   const [projects, setProjects] = useState<userProjectsResponse[]>([]);
@@ -98,6 +100,14 @@ const Project = () => {
                     <span className="font-medium text-gray-700">Budget:</span> $
                     {project.budget}
                   </p>
+                  {project.total_invested && (
+                    <p className="text-sm text-gray-600 mb-1">
+                      <span className="font-medium text-green-700">
+                        Total invested:
+                      </span>{" "}
+                      ${project.total_invested}
+                    </p>
+                  )}
                   <p className="text-sm text-gray-600 mb-3">
                     <span className="font-medium text-gray-700">Status:</span>{" "}
                     <span
