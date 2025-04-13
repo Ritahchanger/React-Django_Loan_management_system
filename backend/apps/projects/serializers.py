@@ -8,10 +8,16 @@ from rest_framework.exceptions import ValidationError
 CustomUser = get_user_model()
 
 class ProjectSerializer(serializers.ModelSerializer):
+
+    total_invested = serializers.DecimalField(read_only=True, max_digits=12, decimal_places=2)
+    investors_list = serializers.ListField(read_only=True)
+
     class Meta:
         model = Project
-        fields = ['id', 'title', 'category', 'problem', 'solution', 'goals', 'budget', 'pitched_by', 'status']
+        fields = ['id', 'title', 'category', 'problem', 'solution', 'goals', 'budget', 'pitched_by', 'status', 'total_invested', 'investors_list']
         read_only_fields = ['pitched_by', 'status']
+
+
 
 
 

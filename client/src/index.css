@@ -77,16 +77,22 @@ body.dark .bg-gray-50 {
 body.dark .account-nav {
   background: #1f2937;
 }
+body.dark .text-neutral-800 {
+  color: #ccc;
+}
+body.dark tr td {
+  border: 1px solid #232323;
+}
 body.dark input,
 body.dark select,
 body.dark textarea {
   background: #374151;
   color: var(--dark-mode-text);
 }
-input[type=file]{
-  width:250px;
-  border-radius:3px;
-  padding:0 0.4rem;
+input[type="file"] {
+  width: 250px;
+  border-radius: 3px;
+  padding: 0 0.4rem;
 }
 body .scrolled-nav .text-white,
 body .scrolled-nav .text-gray-800 {

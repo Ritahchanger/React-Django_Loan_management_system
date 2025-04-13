@@ -8,6 +8,8 @@ interface userProjectsResponse {
   budget: string;
   pitched_by: string;
   status: string;
+  total_invested: string;
+  investors_list: string[];
 }
 
 export type { userProjectsResponse };

@@ -5,9 +5,14 @@ from .models import Project, Investment
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ("title", "category", "budget", "pitched_by", "status")
+    list_display = ("title", "category", "budget", "pitched_by", "status", "total_invested_display")
     list_filter = ("status", "category")
     search_fields = ("title", "pitched_by__username", "category")
+
+    def total_invested_display(self, obj):
+        return obj.total_invested()
+    total_invested_display.short_description = "Total Invested"
+
 
 
 @admin.register(Investment)

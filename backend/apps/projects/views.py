@@ -42,16 +42,22 @@ class ProjectUserView(generics.ListAPIView):
         user_id = self.kwargs['user_id']
         return Project.objects.filter(pitched_by_id=user_id)
 
-# View for viewing and investing in projects
+
 
 
 class MakeInvestmentView(generics.CreateAPIView):
-
-
     serializer_class = InvestmentSerializer
-
     permission_classes = [IsAuthenticated]
 
-    def perform_create(self,serializer):
+    def perform_create(self, serializer):
+        project = serializer.validated_data['project']
+        amount = serializer.validated_data['amount']
 
+        if amount is None or amount <= 0:
+            raise ValidationError("Investment amount must be greater than zero.")
+
+        if project.status != 'active':
+            raise ValidationError("You can only invest in active projects.")
+
+      
         serializer.save(investor=self.request.user)

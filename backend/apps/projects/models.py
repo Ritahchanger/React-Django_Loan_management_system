@@ -2,6 +2,7 @@
 from django.db import models
 from apps.users.models import CustomUser
 
+from django.db.models import Sum
 class Project(models.Model):
     title = models.CharField(max_length=255)
     category = models.CharField(max_length=100)
@@ -11,6 +12,14 @@ class Project(models.Model):
     budget = models.DecimalField(max_digits=12, decimal_places=2)
     pitched_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="pitched_projects")
     status = models.CharField(max_length=50, choices=[('active', 'Active'), ('funded', 'Funded')], default='active')
+
+
+    def total_invested(self):
+        return self.investments.aggregate(total=Sum('amount'))['total'] or 0
+
+    def investors_list(self):
+        return self.investments.values_list('investor__email', flat=True).distinct()
+    
 
     def __str__(self):
         return self.title
