@@ -46,6 +46,9 @@ const Login = () => {
       if (role === "borrower") {
         navigate("/loans");
         return;
+      } else {
+        navigate("/account/myinvestments");
+        return;
       }
     } catch (err: any) {
       setError(

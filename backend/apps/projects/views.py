@@ -7,6 +7,8 @@ from .serializers import ProjectSerializer,InvestmentSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.exceptions import ValidationError
 
+from .models  import Investment
+
 from django.db.models import Sum
 
 
@@ -73,4 +75,21 @@ class MakeInvestmentView(generics.CreateAPIView):
 
 
             project.save()
+
+
+
+class InvestorInvestmentView(generics.ListAPIView):
+
+
+    serializer_class = InvestmentSerializer
+
+
+    permission_classes = [IsAuthenticated]
+
+
+    def get_queryset(self):
+
+        user = self.request.user
+
+        return Investment.objects.filter(investor=user);
 
