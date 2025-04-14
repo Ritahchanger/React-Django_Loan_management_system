@@ -91,5 +91,5 @@ class InvestorInvestmentView(generics.ListAPIView):
 
         user = self.request.user
 
-        return Investment.objects.filter(investor=user);
+        return Investment.objects.filter(investor=user)
 

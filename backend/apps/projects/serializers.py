@@ -27,11 +27,15 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 class InvestmentSerializer(serializers.ModelSerializer):
 
+    project_name = serializers.CharField(source='project.title',read_only=True)
+
+    pitched_by = serializers.CharField(source='project.pitched_by.username',read_only=True)
+
     class Meta:
 
         model = Investment
 
-        fields = ['id', 'project', 'amount', 'investor', 'invested_at']
+        fields = ['id', 'project', 'project_name','pitched_by' ,'amount', 'investor', 'invested_at']
         read_only_fields = ['investor', 'invested_at']
 
         def validate_amount(self,value):

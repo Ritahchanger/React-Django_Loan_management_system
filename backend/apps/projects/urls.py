@@ -1,6 +1,12 @@
 from django.urls import path
 
-from .views import ProjectListView, ProjectPitchingView, ProjectUserView, MakeInvestmentView
+from .views import (
+    ProjectListView,
+    ProjectPitchingView,
+    ProjectUserView,
+    MakeInvestmentView,
+    InvestorInvestmentView,
+)
 
 urlpatterns = [
     path("list/", ProjectListView.as_view(), name="project_list"),
@@ -8,6 +14,7 @@ urlpatterns = [
     path(
         "user-projects/<int:user_id>/", ProjectUserView.as_view(), name="user_projects"
     ),
+    path("investments/", MakeInvestmentView.as_view()),
 
-    path('investments/',MakeInvestmentView.as_view())
+    path("investments/list/", InvestorInvestmentView.as_view()),
 ]
