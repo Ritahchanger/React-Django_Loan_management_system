@@ -2,109 +2,116 @@ import {
   Banknote,
   Briefcase,
   Calendar,
-  CheckCircle,
-  Hourglass,
 } from "lucide-react";
 
-import Navbar from "../../components/Navbar/Navbar";
-
-import Title from "../../components/Title/Title";
-
 import AccountLayout from "../../Layout/AccountLayout";
+import { baseUrl, useAuthHeaders } from "../../Config/Config";
+import { IInvestmentResponse } from "../../types/Investmentresponse.interface";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const MyInvestments = () => {
-  const investments = [
-    {
-      amount: "$1,000",
-      sector: "Technology",
-      createdAt: "2024-07-29",
-      status: "Active",
-    },
-    {
-      amount: "$500",
-      sector: "Healthcare",
-      createdAt: "2024-07-28",
-      status: "Pending",
-    },
-  ];
+  const authHeaders = useAuthHeaders();
+  const [investments, setInvestments] = useState<IInvestmentResponse[] | null>(
+    null
+  );
+
+  const fetchInvestors = async () => {
+    try {
+      const response = await axios.get(
+        `${baseUrl}projects/investments/list/`,
+        {
+          headers: authHeaders,
+        }
+      );
+      setInvestments(response.data);
+    } catch (error) {
+      console.error("Error fetching investments:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchInvestors();
+  }, []);
 
   return (
     <AccountLayout>
-      <div>
-        <div className="mt-[2rem]">
-          <h1 className="text-2xl font-bold text-gray-800 mb-2 text-center tracking-wider">
-            MY INVESTMENTS
-          </h1>
-        </div>
-        <div className="container mx-auto">
-          <div className="table-wrapper overflow-x-auto">
-            <table className="w-full border-collapse border border-neutral-300">
-              <thead>
-                <tr className="bg-blue-600 text-sm">
-                  <th className="px-4  text-neutral-500 ">
-                    <div className="flex items-center">
-                      <Banknote
-                        size={24}
-                        className="inline-block text-gray-600 mr-[1rem]"
-                      />
-                      <p> AMOUNT INVESTED</p>
+      <div className="px-4 sm:px-8 py-6">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center tracking-wider">
+          MY INVESTMENTS
+        </h1>
+
+        <div className="overflow-x-auto shadow-md">
+          <table className="min-w-full border border-neutral-300 rounded-lg overflow-hidden text-sm">
+            <thead>
+              <tr className="bg-blue-600 text-white text-left">
+                <th className="px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <div className="bg-white p-1 rounded-full">
+                      <Banknote size={20} className="text-blue-600" />
                     </div>
-                  </th>
-                  <th className="px-4 ">
-                    <div className="flex items-center">
-                      <Briefcase
-                        size={24}
-                        className="inline-block text-gray-600  mr-[1rem]"
-                      />
-                      <p> SECTOR</p>
+                    <span className="font-medium">Amount Invested</span>
+                  </div>
+                </th>
+                <th className="px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <div className="bg-white p-1 rounded-full">
+                      <Briefcase size={20} className="text-blue-600" />
                     </div>
-                  </th>
-                  <th className="px-4 ">
-                    <div className="flex items-center">
-                      <Calendar
-                        size={25}
-                        className="inline-block text-gray-600 mr-[1rem]"
-                      />
-                      <p> CREATED AT</p>
+                    <span className="font-medium">Project Name</span>
+                  </div>
+                </th>
+                <th className="px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <div className="bg-white p-1 rounded-full">
+                      <Calendar size={20} className="text-blue-600" />
                     </div>
-                  </th>
-                  <th className="px-4 py-2">
-                    STATUS
-                  </th>
+                    <span className="font-medium">Pitched By</span>
+                  </div>
+                </th>
+                <th className="px-4 py-3 text-center font-medium">Invested At</th>
+              </tr>
+            </thead>
+            <tbody>
+              {investments?.map((investment) => (
+                <tr
+                  key={investment.id}
+                  className="text-center  hover:bg-blue-50 hover:text-blue-500 transition duration-150"
+                >
+                  <td className="border border-neutral-300 px-4 py-2">
+                    ${Number(investment.amount).toLocaleString()}
+                  </td>
+                  <td className="border border-neutral-300 px-4 py-2">
+                    {investment.project_name}
+                  </td>
+                  <td className="border border-neutral-300 px-4 py-2">
+                    {investment.pitched_by}
+                  </td>
+                  <td className="border border-neutral-300 px-4 py-2">
+                    {new Date(investment.invested_at).toLocaleString()}
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {investments.map((investment, index) => (
-                  <tr key={index} className="text-center">
-                    <td className="border border-neutral-300 px-4 py-2">
-                      {investment.amount}
-                    </td>
-                    <td className="border border-neutral-300 px-4 py-2">
-                      {investment.sector}
-                    </td>
-                    <td className="border border-neutral-300 px-4 py-2">
-                      {investment.createdAt}
-                    </td>
-                    <td className="border border-neutral-300 px-4 py-2 flex justify-center items-center gap-2">
-                      {investment.status === "Active" ? (
-                        <CheckCircle size={16} className="text-green-500" />
-                      ) : (
-                        <Hourglass size={16} className="text-yellow-500" />
-                      )}
-                      {investment.status}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+              ))}
+              {investments?.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={4}
+                    className="text-center py-4 text-gray-500 italic"
+                  >
+                    No investments found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 mt-8">
+          <div className="p-4 border border-neutral-300 text-center rounded-md">
+            <p className="font-medium text-blue-600">LOANS</p>
           </div>
-          <div className="grid grid-cols-2 gap-[1rem] mt-[2rem]">
-            <div className="p-[1rem] border border-neutral-300">
-              <p>LOANS</p>
-            </div>
-            <div className="p-[1rem] border border-neutral-300">
-              <p>APPLY</p>
-            </div>
+          <div className="p-4 border border-neutral-300 text-center rounded-md">
+            <p className="font-medium text-blue-600">APPLY</p>
           </div>
         </div>
       </div>

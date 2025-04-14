@@ -13,6 +13,9 @@ import ProjectPitching from "./pages/ProjectPitching/ProjectPitching";
 import ProtectedRoute from "./Protected/Protected";
 import Project from "./pages/Projects/Project";
 import AllPitches from "./pages/AccountPages/Pitches/Pitches";
+
+import Profile from "./pages/Profile/Profile";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -20,7 +23,7 @@ const App = () => {
   return (
     <div>
       <BrowserRouter>
-      <ToastContainer />
+        <ToastContainer />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -30,6 +33,7 @@ const App = () => {
             <Route path="/account/myinvestments" element={<MyInvestments />} />
             <Route path="/account/projects" element={<Project />} />
             <Route path="/personal-loans" element={<PersonalLoans />} />
+            <Route path="/account/profile" element={<Profile />} />
             <Route path="/asset-financing" element={<AssetFinancing />} />
             <Route path="/business-loans" element={<BusinessLoans />} />
             <Route path="/account/investors" element={<InvestorsPage />} />

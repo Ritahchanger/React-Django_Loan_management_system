@@ -15,12 +15,17 @@ import { User } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 
 import { toggleSidebar } from "../store/slices/SidebarSlice";
+
 import { useDispatch, useSelector } from "react-redux";
+
+
 import { AppDispatch, RootState } from "../store/redux/Store";
 
 import { logout } from "../store/slices/authSlice";
 
 const AccountNavbar = () => {
+
+  
   const dispatch = useDispatch<AppDispatch>();
 
   const { isSidebarShown } = useSelector((state: RootState) => state.sidebar);
@@ -82,7 +87,14 @@ const AccountNavbar = () => {
               </button>
             </div>
             <div className="flex items-center relative h-full">
-              <User />
+              <button
+                className="cursor-pointer"
+                onClick={() => {
+                  navigate("/account/profile");
+                }}
+              >
+                <User />
+              </button>
               <p className="ml-[1rem] font-semibold hidden md:block ">
                 {user.username}
               </p>
