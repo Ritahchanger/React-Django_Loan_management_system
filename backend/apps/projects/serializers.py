@@ -38,33 +38,25 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
 class InvestmentSerializer(serializers.ModelSerializer):
-
     project_name = serializers.CharField(source="project.title", read_only=True)
-
-    pitched_by = serializers.CharField(
-        source="project.pitched_by.username", read_only=True
-    )
+    video_url = serializers.CharField(source="project.video_url", read_only=True)
+    pitched_by = serializers.CharField(source="project.pitched_by.username", read_only=True)
 
     class Meta:
-
         model = Investment
-
         fields = [
             "id",
             "project",
             "project_name",
+            "video_url",        # <-- ✅ Include this!
             "pitched_by",
             "amount",
-            "video_url",
             "investor",
             "invested_at",
         ]
         read_only_fields = ["investor", "invested_at"]
 
-        def validate_amount(self, value):
-
-            if value is not None and value <= 0:
-
-                raise ValidationError("Investment amount must be greater than 0.")
-
-            return value
+    def validate_amount(self, value):
+        if value is not None and value <= 0:
+            raise ValidationError("Investment amount must be greater than 0.")
+        return value
