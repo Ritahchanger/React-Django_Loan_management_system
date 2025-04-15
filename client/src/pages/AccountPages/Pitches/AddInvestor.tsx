@@ -28,7 +28,8 @@ const AddInvestor = ({
   const authHeaders = useAuthHeaders();
 
   const handleSubmit = async () => {
-    const numericAmount = parseInt(amount);
+    
+    const numericAmount = parseFloat(amount);
 
     if (!amount || numericAmount <= 0) {
       toast.error("Please enter a valid investment amount greater than 0.");
@@ -59,7 +60,7 @@ const AddInvestor = ({
       );
 
       await fetchProjects();
-      dispatch(decrementInvestment(Number(numericAmount)));
+      dispatch(decrementInvestment(numericAmount));
       toast.success("Investment submitted successfully!");
       setAmount(""); // clear input after success
       handleModalToggle();

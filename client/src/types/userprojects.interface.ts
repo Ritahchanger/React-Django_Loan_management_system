@@ -11,6 +11,7 @@ interface userProjectsResponse {
   total_invested: string;
   investors_list: string[];
   pitched_by_username?:string
+  video_url?:string;
 }
 
 export type { userProjectsResponse };

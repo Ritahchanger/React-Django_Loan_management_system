@@ -11,7 +11,6 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/redux/Store";
 
 const MyInvestments = () => {
-
   const dispatch = useDispatch<AppDispatch>();
 
   const authHeaders = useAuthHeaders();
@@ -41,7 +40,7 @@ const MyInvestments = () => {
 
   const addDeposit = async () => {
     const input = prompt("How much do you want to add?");
-    const amount = parseInt(input || "0");
+    const amount = parseFloat(input || "0.0");
 
     if (!input || isNaN(amount) || amount < 50000) {
       toast.error("The deposit must be a valid number greater than 50,000.");
@@ -57,7 +56,7 @@ const MyInvestments = () => {
 
       console.log(response.data);
       if (response.status === 200) {
-        dispatch(incrementInvestment(Number(amount)))
+        dispatch(incrementInvestment(amount));
         toast.success("Investment added successfully!");
         fetchInvestors();
       } else {

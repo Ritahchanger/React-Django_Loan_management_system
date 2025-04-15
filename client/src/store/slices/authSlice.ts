@@ -51,8 +51,9 @@ const authSlice = createSlice({
       if (state.amount_invested !== null) {
         state.amount_invested = Math.max(
           0,
-          state.amount_invested - action.payload.amount
+          state.amount_invested - action.payload
         );
+
         sessionStorage.setItem(
           "amount_invested",
           JSON.stringify(state.amount_invested)
@@ -67,7 +68,8 @@ const authSlice = createSlice({
 
     incrementInvestment(state, action: PayloadAction<any>) {
       if (state.amount_invested !== null) {
-        state.amount_invested += action.payload.amount;
+        console.log(state.amount_invested);
+        state.amount_invested += action.payload;
         sessionStorage.setItem(
           "amount_invested",
           JSON.stringify(state.amount_invested)
@@ -82,11 +84,7 @@ const authSlice = createSlice({
   },
 });
 
-export const {
-  login,
-  logout,
-  decrementInvestment,
-  incrementInvestment,
-} = authSlice.actions;
+export const { login, logout, decrementInvestment, incrementInvestment } =
+  authSlice.actions;
 
 export default authSlice;

@@ -29,11 +29,10 @@ const Profile = () => {
         { headers: authHeaders }
       );
 
-      if (response.data.status === 200) {
+      if (response.status === 200) {
         navigate("/login");
       }
       console.log("Role changed:", response.data);
-      window.location.reload();
     } catch (error) {
       console.error("Error changing role:", error);
     } finally {

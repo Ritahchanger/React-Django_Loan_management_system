@@ -16,7 +16,7 @@ const ProjectPitching = () => {
     solution: "",
     goals: "",
     budget: "",
-    file: null as File | null,
+    video_url: "",
   });
 
   const handleChange = (
@@ -24,17 +24,10 @@ const ProjectPitching = () => {
   ) => {
     const { name, value } = e.target;
 
-    if (e.target instanceof HTMLInputElement && e.target.type === "file") {
-      setFormData({
-        ...formData,
-        file: e.target.files ? e.target.files[0] : null,
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -50,8 +43,8 @@ const ProjectPitching = () => {
       payload.append("budget", formData.budget);
       payload.append("status", "pending");
 
-      if (formData.file) {
-        payload.append("file", formData.file);
+      if (formData.video_url) {
+        payload.append("video_url", formData.video_url);
       }
 
       const response = await axios.post(`${baseUrl}projects/pitch/`, payload, {
@@ -65,7 +58,6 @@ const ProjectPitching = () => {
 
       if (response.status === 201 || response.status === 200) {
         alert("Project pitch submitted successfully!");
-        // Clear form
         setFormData({
           title: "",
           category: "",
@@ -73,7 +65,7 @@ const ProjectPitching = () => {
           solution: "",
           goals: "",
           budget: "",
-          file: null,
+          video_url: "",
         });
       }
     } catch (error: any) {
@@ -175,14 +167,15 @@ const ProjectPitching = () => {
 
           <div>
             <label className="block mb-1 font-medium">
-              Attach Supporting Document (optional)
+              Video Pitch URL (optional)
             </label>
             <input
-              type="file"
-              name="file"
+              type="url"
+              name="video_url"
+              value={formData.video_url}
               onChange={handleChange}
-              className="w-full"
-              accept=".pdf,.doc,.docx,.ppt,.pptx"
+              className="w-full border rounded border-neutral-300 px-4 py-2"
+              placeholder="https://youtube.com/your-pitch-video"
             />
           </div>
 

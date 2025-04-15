@@ -28,6 +28,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+USE_TZ = True
+TIME_ZONE = 'Africa/Nairobi'
+
 # Application definition
 
 INSTALLED_APPS = [
