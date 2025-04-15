@@ -3,11 +3,11 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from .models import Project
-from .serializers import ProjectSerializer,InvestmentSerializer
+from .serializers import ProjectSerializer, InvestmentSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.exceptions import ValidationError
 
-from .models  import Investment
+from .models import Investment
 
 
 from django.db.models import Sum
@@ -44,10 +44,8 @@ class ProjectUserView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        user_id = self.kwargs['user_id']
+        user_id = self.kwargs["user_id"]
         return Project.objects.filter(pitched_by_id=user_id)
-
-
 
 
 class MakeInvestmentView(generics.CreateAPIView):
@@ -55,42 +53,47 @@ class MakeInvestmentView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        project = serializer.validated_data['project']
-        amount = serializer.validated_data['amount']
 
-        if amount is None or amount <= 0:
+        project = serializer.validated_data["project"]
+
+        amount = serializer.validated_data["amount"]
+
+        user = self.request.user
+
+        if user.role != "investor":
+            raise ValidationError("Only investors can make investments.")
+
+        if not user.investment_amount or user.investment_amount < amount:
+            raise ValidationError("Insufficient investment amount available.")
+
+        if amount <= 0:
             raise ValidationError("Investment amount must be greater than zero.")
 
-        if project.status != 'active':
+        if project.status != "active":
             raise ValidationError("You can only invest in active projects.")
 
-      
-        serializer.save(investor=self.request.user)
+        user.investment_amount -= amount
+        user.save()
 
-        total_invested = project.investments.aggregate(total=Sum('amount'))['total'] or 0
+        serializer.save(investor=user)
 
+        total_invested = (
+            project.investments.aggregate(total=Sum("amount"))["total"] or 0
+        )
 
         if total_invested >= project.budget:
-
-            project.status = 'funded'
-
-
+            project.status = "funded"
             project.save()
-
 
 
 class InvestorInvestmentView(generics.ListAPIView):
 
-
     serializer_class = InvestmentSerializer
 
-
     permission_classes = [IsAuthenticated]
-
 
     def get_queryset(self):
 
         user = self.request.user
 
         return Investment.objects.filter(investor=user)
-

@@ -136,7 +136,9 @@ class UserView(APIView):
         if action == "projects":
             if request.user.id != user_id and request.user.role != "admin":
                 return Response(
-                    {"detail": "You do not have permission to view this user's projects."},
+                    {
+                        "detail": "You do not have permission to view this user's projects."
+                    },
                     status=status.HTTP_403_FORBIDDEN,
                 )
 
@@ -147,7 +149,9 @@ class UserView(APIView):
         elif action == "investors":
             if request.user.id != user_id and request.user.role != "admin":
                 return Response(
-                    {"detail": "You do not have permission to view this user's investors."},
+                    {
+                        "detail": "You do not have permission to view this user's investors."
+                    },
                     status=status.HTTP_403_FORBIDDEN,
                 )
 
@@ -187,7 +191,9 @@ class UserView(APIView):
 
             if request.user.id != user_id and request.user.role != "admin":
                 return Response(
-                    {"detail": "You do not have permission to change this user's role."},
+                    {
+                        "detail": "You do not have permission to change this user's role."
+                    },
                     status=status.HTTP_403_FORBIDDEN,
                 )
 
@@ -221,4 +227,36 @@ class UserView(APIView):
         return Response(
             {"detail": "Invalid action for PATCH method."},
             status=status.HTTP_400_BAD_REQUEST,
+        )
+
+
+class IncrementInvestmentView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request):
+        try:
+            amount = float(request.data.get("amount", 0))
+            if amount <= 0:
+                raise ValueError
+        except (TypeError, ValueError):
+            return Response(
+                {
+                    "detail": "Invalid or missing 'amount'. It must be a positive number.",
+                    "success": True,
+                    "status": 400,
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        user = request.user
+        current_amount = float(user.investment_amount or 0)
+        user.investment_amount = str(current_amount + amount)
+        user.save()
+
+        return Response(
+            {
+                "message": f"Deposit successful. New investment amount: {user.investment_amount}",
+                "user": CustomUserSerializer(user).data,
+            },
+            status=status.HTTP_200_OK,
         )
