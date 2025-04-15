@@ -32,7 +32,7 @@ class ProjectPitchingView(generics.CreateAPIView):
 
 class ProjectListView(generics.ListAPIView):
 
-    queryset = Project.objects.all()
+    queryset = Project.objects.all().order_by("-id")
 
     serializer_class = ProjectSerializer
 
@@ -45,7 +45,7 @@ class ProjectUserView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs["user_id"]
-        return Project.objects.filter(pitched_by_id=user_id)
+        return Project.objects.filter(pitched_by_id=user_id).order_by("-id")
 
 
 class MakeInvestmentView(generics.CreateAPIView):
@@ -96,4 +96,4 @@ class InvestorInvestmentView(generics.ListAPIView):
 
         user = self.request.user
 
-        return Investment.objects.filter(investor=user)
+        return Investment.objects.filter(investor=user).order_by("-id")
