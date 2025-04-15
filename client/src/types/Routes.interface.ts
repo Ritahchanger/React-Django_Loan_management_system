@@ -1,8 +1,8 @@
 interface IRoute{
 
-    id:number;
+    id?:number;
 
-    name:string;
+    name?:string;
 
     path:string;
 
@@ -13,4 +13,5 @@ interface IRoute{
 }
 
 
+export type { IRoute }
 

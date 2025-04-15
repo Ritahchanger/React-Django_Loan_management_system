@@ -33,13 +33,22 @@ const authSlice = createSlice({
       sessionStorage.removeItem("authToken");
       sessionStorage.removeItem("user");
     },
-    decrementInvestment(state, action: PayloadAction<any>) {
-      let userInvestment = state.user.investment_amount;
+    decrementInvestment(state, action: PayloadAction<number>) {
+      const currentAmount = parseFloat(state.user.investment_amount) || 0;
+      const deduction = action.payload;
 
-      userInvestment = userInvestment - action.payload.amount;
+      const updatedInvestment = Math.max(0, currentAmount - deduction);
 
-      state.user = { ...state.user, investment_amount: userInvestment };
+      const newUser = {
+        ...state.user,
+        investment_amount: updatedInvestment.toString(),
+      };
 
+      // Update session storage
+      sessionStorage.setItem("user", JSON.stringify(newUser));
+
+      // Update Redux state
+      state.user = newUser;
     },
   },
 });
