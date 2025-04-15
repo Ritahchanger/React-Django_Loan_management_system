@@ -5,8 +5,15 @@ import { IInvestmentResponse } from "../../types/Investmentresponse.interface";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { incrementInvestment } from "../../store/slices/authSlice";
+
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/redux/Store";
 
 const MyInvestments = () => {
+
+  const dispatch = useDispatch<AppDispatch>();
+
   const authHeaders = useAuthHeaders();
   const [investments, setInvestments] = useState<IInvestmentResponse[] | null>(
     null
@@ -50,6 +57,7 @@ const MyInvestments = () => {
 
       console.log(response.data);
       if (response.status === 200) {
+        dispatch(incrementInvestment(Number(amount)))
         toast.success("Investment added successfully!");
         fetchInvestors();
       } else {

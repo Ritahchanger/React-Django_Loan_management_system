@@ -1,17 +1,45 @@
 import AccountLayout from "../../Layout/AccountLayout";
-import { useAuthHeaders } from "../../Config/Config";
-import { useState, useEffect } from "react";
+import { useAuthHeaders, baseUrl } from "../../Config/Config";
+import { useState } from "react";
 import axios from "axios";
 
-import { User, Mail, Tag, Phone } from "lucide-react"; // Import icons from Lucide React
+import { User, Mail, Tag, Phone } from "lucide-react"; // Icons
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/redux/Store";
 
 import UserProfile from "../../assets/user.png";
 
+import { useNavigate } from "react-router-dom";
+
 const Profile = () => {
   const authHeaders = useAuthHeaders();
   const { user } = useSelector((state: RootState) => state.auth);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleChangeRole = async () => {
+    if (!user) return;
+
+    setIsLoading(true);
+    try {
+      const response = await axios.patch(
+        `${baseUrl}users/change/${user.id}/change-role/`,
+        {},
+        { headers: authHeaders }
+      );
+
+      if (response.data.status === 200) {
+        navigate("/login");
+      }
+      console.log("Role changed:", response.data);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error changing role:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <AccountLayout>
@@ -56,7 +84,7 @@ const Profile = () => {
                   <Tag className="text-gray-600 mr-3" size={20} />
                   <p className="font-medium text-gray-700">Role:</p>
                 </div>
-                <p className="text-gray-500">{user.role}</p>
+                <p className="text-gray-500 capitalize">{user.role}</p>
               </div>
 
               {/* Phone */}
@@ -70,11 +98,23 @@ const Profile = () => {
                 </div>
               )}
 
-              {/* Become an Investor Button */}
+              {/* Toggle Role Button */}
               <div className="mt-4 flex justify-center">
-                {user.role === "borrower" && (
-                  <button className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 transition duration-200 cursor-pointer">
-                    BECOME AN INVESTOR
+                {(user.role === "borrower" || user.role === "investor") && (
+                  <button
+                    onClick={handleChangeRole}
+                    disabled={isLoading}
+                    className={`${
+                      user.role === "borrower"
+                        ? "bg-blue-600 hover:bg-blue-700"
+                        : "bg-red-600 hover:bg-red-700"
+                    } text-white py-2 px-6 rounded-full transition duration-200 cursor-pointer`}
+                  >
+                    {isLoading
+                      ? "Updating..."
+                      : user.role === "borrower"
+                      ? "BECOME AN INVESTOR"
+                      : "BECOME A BORROWER"}
                   </button>
                 )}
               </div>

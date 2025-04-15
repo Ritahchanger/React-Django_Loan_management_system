@@ -79,17 +79,20 @@ const AccountSidebar = () => {
     },
   ];
 
+  let filteredRoutes;
+
   const role = user.role;
-  const filteredRoutes =
-    role === "borrower"
-      ? accountRoutes.filter(
-          (route) =>
-            route.id !== 6 &&
-            route.id !== 8 &&
-            route.id !== 7 &&
-            route.id !== 10
-        )
-      : accountRoutes;
+
+  if (role === "borrower") {
+    filteredRoutes = accountRoutes.filter(
+      (route) =>
+        route.id !== 6 && route.id !== 8 && route.id !== 7 && route.id !== 10
+    );
+  } else {
+    filteredRoutes = accountRoutes.filter(
+      (route) => route.id !== 4 && route.id !== 5
+    );
+  }
 
   return (
     <div

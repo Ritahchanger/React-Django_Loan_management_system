@@ -186,7 +186,7 @@ class UserView(APIView):
             if not user_id:
                 return Response(
                     {"detail": "User ID is required."},
-                    status=status.HTTP_400_BAD_REQUEST,
+                    status=status.HTTP_200_OK,
                 )
 
             if request.user.id != user_id and request.user.role != "admin":

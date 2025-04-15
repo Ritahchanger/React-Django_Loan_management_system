@@ -27,7 +27,9 @@ const AccountNavbar = () => {
 
   const { isSidebarShown } = useSelector((state: RootState) => state.sidebar);
 
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user, amount_invested } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   const { theme, toggleTheme } = useTheme();
 
@@ -66,7 +68,7 @@ const AccountNavbar = () => {
             <div className="h-full flex justify-center items-center mr-[2rem]">
               {user.role === "investor" && (
                 <p className="mr-[1rem] text-sm font-semibold tracking-widest">
-                  {`Total Investments:$ ${user.investment_amount}`}
+                  {`Total Investments:$ ${amount_invested}`}
                 </p>
               )}
               <button

@@ -47,7 +47,7 @@ const authSlice = createSlice({
       sessionStorage.removeItem("amount_invested");
     },
 
-    decrementInvestment(state, action: PayloadAction<{ amount: number }>) {
+    decrementInvestment(state, action: PayloadAction<any>) {
       if (state.amount_invested !== null) {
         state.amount_invested = Math.max(
           0,
@@ -65,7 +65,7 @@ const authSlice = createSlice({
       }
     },
 
-    incrementInvestment(state, action: PayloadAction<{ amount: number }>) {
+    incrementInvestment(state, action: PayloadAction<any>) {
       if (state.amount_invested !== null) {
         state.amount_invested += action.payload.amount;
         sessionStorage.setItem(
