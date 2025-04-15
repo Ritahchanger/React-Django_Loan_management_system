@@ -13,6 +13,7 @@ class Project(models.Model):
     pitched_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="pitched_projects")
     status = models.CharField(max_length=50, choices=[('active', 'Active'), ('funded', 'Funded')], default='active')
 
+    video_url = models.URLField(max_length=500, blank=True, null=True)
 
     def total_invested(self):
         return self.investments.aggregate(total=Sum('amount'))['total'] or 0
