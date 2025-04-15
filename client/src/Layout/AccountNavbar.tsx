@@ -67,6 +67,7 @@ const AccountNavbar = () => {
 
           <div className="flex items-center h-full justify-center ">
             <div className="h-full flex justify-center items-center mr-[2rem]">
+              <p className="mr-[1rem] text-sm font-semibold tracking-widest">TOTAL INVESTMENTS:$650000</p>
               <button
                 className="common-button mr-[1.2rem] hidden md:block"
                 onClick={() => {

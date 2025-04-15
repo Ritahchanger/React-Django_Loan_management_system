@@ -2,6 +2,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from django.core.exceptions import ValidationError
 
 class CustomUser(AbstractUser):
     ROLE_CHOICES = [
@@ -26,6 +27,11 @@ class CustomUser(AbstractUser):
             and self.investment_amount
             and self.investment_amount >= 100000
         )
+
+    def clean(self):
+        super().clean()
+        if self.role == "investor" and not self.investment_amount:
+            raise ValidationError("Investment amount is required for investors.")
 
     def __str__(self):
         return self.username

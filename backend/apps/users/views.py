@@ -125,64 +125,100 @@ class UserView(APIView):
     def post(self, request, action=None):
         if action == "login":
             return LoginUserView.as_view()(request)
-
         elif action == "signup":
             return RegisterUserView.as_view()(request)
-
         return Response(
-            {"detail": "Invalid action."}, status=status.HTTP_400_BAD_REQUEST
+            {"detail": "Invalid action."},
+            status=status.HTTP_400_BAD_REQUEST,
         )
 
     def get(self, request, user_id=None, action=None):
         if action == "projects":
             if request.user.id != user_id and request.user.role != "admin":
                 return Response(
-                    {
-                        "detail": "You do not have permission to view this user's projects."
-                    },
-                    status=403,
+                    {"detail": "You do not have permission to view this user's projects."},
+                    status=status.HTTP_403_FORBIDDEN,
                 )
 
             projects = Project.objects.filter(pitched_by=user_id)
             serializer = ProjectSerializer(projects, many=True)
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         elif action == "investors":
             if request.user.id != user_id and request.user.role != "admin":
                 return Response(
-                    {
-                        "detail": "You do not have permission to view this user's investors."
-                    },
-                    status=403,
+                    {"detail": "You do not have permission to view this user's investors."},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+
+            invested_projects = Project.objects.filter(pitched_by=user_id)
+
+            if not invested_projects.exists():
+                return Response(
+                    {"detail": "No projects pitched by this user."},
+                    status=status.HTTP_404_NOT_FOUND,
                 )
 
             investors = CustomUser.objects.filter(
                 role="investor", investment_amount__gte=100000
             )
-            invested_projects = Project.objects.filter(pitched_by=user_id)
 
-            if not invested_projects or not investors:
+            if not investors.exists():
                 return Response(
-                    {
-                        "detail": "No investors found or no projects pitched by this user."
-                    },
-                    status=404,
+                    {"detail": "No investors found."},
+                    status=status.HTTP_404_NOT_FOUND,
                 )
 
-            invested_in_user = []
-            for investor in investors:
-                for project in invested_projects:
-                    if project.pitched_by == investor:
-                        invested_in_user.append(investor)
-
-            if not invested_in_user:
-                return Response(
-                    {"detail": "No investors found for this user."}, status=404
-                )
-
-            serializer = CustomUserSerializer(invested_in_user, many=True)
-            return Response(serializer.data)
+            serializer = CustomUserSerializer(investors, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(
-            {"detail": "Invalid action."}, status=status.HTTP_400_BAD_REQUEST
+            {"detail": "Invalid action."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    def patch(self, request, user_id=None, action=None):
+        if action == "change-role":
+            if not user_id:
+                return Response(
+                    {"detail": "User ID is required."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            if request.user.id != user_id and request.user.role != "admin":
+                return Response(
+                    {"detail": "You do not have permission to change this user's role."},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+
+            try:
+                user = CustomUser.objects.get(id=user_id)
+            except CustomUser.DoesNotExist:
+                return Response(
+                    {"detail": "User not found."},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+
+            if user.role == "borrower":
+                user.role = "investor"
+            elif user.role == "investor":
+                user.role = "borrower"
+            else:
+                return Response(
+                    {"detail": "Only investors and borrowers can toggle roles."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            user.save()
+            return Response(
+                {
+                    "message": f"User role updated successfully to {user.role}.",
+                    "user": CustomUserSerializer(user).data,
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        return Response(
+            {"detail": "Invalid action for PATCH method."},
+            status=status.HTTP_400_BAD_REQUEST,
         )

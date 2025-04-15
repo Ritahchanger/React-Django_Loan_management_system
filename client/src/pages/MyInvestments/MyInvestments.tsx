@@ -106,14 +106,7 @@ const MyInvestments = () => {
           </table>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 mt-8">
-          <div className="p-4 border border-neutral-300 text-center rounded-md">
-            <p className="font-medium text-blue-600">LOANS</p>
-          </div>
-          <div className="p-4 border border-neutral-300 text-center rounded-md">
-            <p className="font-medium text-blue-600">APPLY</p>
-          </div>
-        </div>
+      
       </div>
     </AccountLayout>
   );
