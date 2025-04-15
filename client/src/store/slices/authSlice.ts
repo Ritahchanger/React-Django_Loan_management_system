@@ -33,8 +33,16 @@ const authSlice = createSlice({
       sessionStorage.removeItem("authToken");
       sessionStorage.removeItem("user");
     },
+    decrementInvestment(state, action: PayloadAction<any>) {
+      let userInvestment = state.user.investment_amount;
+
+      userInvestment = userInvestment - action.payload.amount;
+
+      state.user = { ...state.user, investment_amount: userInvestment };
+
+    },
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, decrementInvestment } = authSlice.actions;
 export default authSlice;

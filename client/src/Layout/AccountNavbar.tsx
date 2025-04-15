@@ -18,14 +18,11 @@ import { toggleSidebar } from "../store/slices/SidebarSlice";
 
 import { useDispatch, useSelector } from "react-redux";
 
-
 import { AppDispatch, RootState } from "../store/redux/Store";
 
 import { logout } from "../store/slices/authSlice";
 
 const AccountNavbar = () => {
-
-  
   const dispatch = useDispatch<AppDispatch>();
 
   const { isSidebarShown } = useSelector((state: RootState) => state.sidebar);
@@ -67,7 +64,11 @@ const AccountNavbar = () => {
 
           <div className="flex items-center h-full justify-center ">
             <div className="h-full flex justify-center items-center mr-[2rem]">
-              <p className="mr-[1rem] text-sm font-semibold tracking-widest">TOTAL INVESTMENTS:$650000</p>
+              {user.role === "investor" && (
+                <p className="mr-[1rem] text-sm font-semibold tracking-widest">
+                  {`Total Investments:$ ${user.investment_amount}`}
+                </p>
+              )}
               <button
                 className="common-button mr-[1.2rem] hidden md:block"
                 onClick={() => {

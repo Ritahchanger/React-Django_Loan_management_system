@@ -12,7 +12,11 @@ import axios from "axios";
 
 import { useSelector } from "react-redux";
 
-import { RootState } from "../../../store/redux/Store";
+import { AppDispatch, RootState } from "../../../store/redux/Store";
+
+import { useDispatch } from "react-redux";
+
+import { decrementInvestment } from "../../../store/slices/authSlice";
 
 const AddInvestor = ({
   handleModalToggle,
@@ -25,7 +29,11 @@ const AddInvestor = ({
   fetchProjects: () => void;
   projectId: string;
 }) => {
+
+
   const { token } = useSelector((state: RootState) => state.auth);
+
+  const dispatch = useDispatch<AppDispatch>()
 
   const { theme } = useTheme();
 

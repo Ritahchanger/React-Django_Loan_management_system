@@ -8,7 +8,7 @@ import axios from "axios";
 
 import { userProjectsResponse } from "../../../types/userprojects.interface";
 
-import { RootState } from "../../../store/redux/Store";
+import { AppDispatch, RootState } from "../../../store/redux/Store";
 
 import { baseUrl } from "../../../Config/Config";
 
@@ -18,7 +18,14 @@ import { CheckCircle } from "lucide-react";
 
 import AddInvestor from "./AddInvestor";
 
+import { useDispatch } from "react-redux";
+
+import { decrementInvestment } from "../../../store/slices/authSlice";
+
 const AllPitches = () => {
+
+  const  dispatch = useDispatch<AppDispatch>()
+
   const [isInvestorModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalToggle = () => setIsModalOpen(!isInvestorModalOpen);

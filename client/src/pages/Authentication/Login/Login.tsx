@@ -83,6 +83,7 @@ const Login = () => {
               placeholder="Enter your username"
               value={formData.username}
               onChange={handleChange}
+              autoComplete="off"
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               required
             />
@@ -97,6 +98,7 @@ const Login = () => {
               name="password"
               placeholder="Enter your password"
               value={formData.password}
+              autoComplete="off"
               onChange={handleChange}
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               required

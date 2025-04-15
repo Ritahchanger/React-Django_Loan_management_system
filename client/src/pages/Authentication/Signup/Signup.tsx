@@ -13,6 +13,7 @@ interface SignupFormData {
   password: string;
   confirmPassword: string;
   role: string;
+  investment_amount?: number;
 }
 
 interface Errors {
@@ -34,6 +35,7 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
     role: "",
+    investment_amount: undefined,
   });
 
   const [errors, setErrors] = useState<Errors>({});
@@ -59,10 +61,37 @@ const Signup = () => {
       return;
     }
 
+    if (formData.role === "investor") {
+      const input = prompt(
+        "Enter initial deposit (must be greater than $100,000):"
+      );
+
+      if (input === null) {
+        toast.error("Investment amount is required to proceed.");
+        return;
+      }
+
+      const amount = parseInt(input);
+
+      if (isNaN(amount) || amount < 100000) {
+        toast.error("Investment amount must be a number greater than $100,000");
+
+        return;
+      }
+
+      formData.investment_amount = amount;
+    } else {
+      formData.investment_amount = undefined;
+    }
+
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post(`${baseUrl}users/register/`, formData);
+      const response = await axios.post(
+        `${baseUrl}users/register/`,
+
+        formData
+      );
 
       if (response.data.success) {
         toast.success(response.data.message);
